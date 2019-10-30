@@ -34,7 +34,7 @@ export class ExplorerService {
 
   private getCommanders(modules: Module[]): Commander[] {
     const comamnders: Commander[] = [];
-    const instanceWrappers = modules.map(module => [...module.providers.values()]).flat();
+    const instanceWrappers = modules.map(module => [...module.providers.values()]).reduce((a, b) => a.concat(b), []);
 
     const classInstanceWrappers = instanceWrappers
       .filter(instanceWrapper => instanceWrapper.instance)
