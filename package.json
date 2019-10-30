@@ -1,5 +1,5 @@
 {
-  "name": "@anchan828/template-packages",
+  "name": "@anchan828/nest-commands-packages",
   "private": true,
   "version": "0.0.0",
   "description": "",
@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anchan828/nest-lerna-template.git"
+    "url": "git+https://github.com/anchan828/nest-commands.git"
   },
   "author": "anchan828 <anchan828@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/anchan828/nest-lerna-template/issues"
+    "url": "https://github.com/anchan828/nest-commands/issues"
   },
-  "homepage": "https://github.com/anchan828/nest-lerna-template",
+  "homepage": "https://github.com/anchan828/nest-commands",
   "devDependencies": {
     "@commitlint/cli": "8.2.0",
     "@commitlint/config-conventional": "8.2.0",
