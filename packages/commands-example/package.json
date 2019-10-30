@@ -32,7 +32,7 @@
   },
   "scripts": {
     "build": "node ../../node_modules/typescript/bin/tsc -p tsconfig.build.json",
-    "postbuild": "nexe ./dist/index.js",
+    "nexe": "nexe ./dist/index.js",
     "build:watch": "node ../../node_modules/typescript/bin/tsc --watch",
     "copy:license": "cp ../../LICENSE ./",
     "lint": "node ../../node_modules/eslint/bin/eslint --ignore-path ../../.eslintignore '**/*.ts' '**/*.spec.ts'",

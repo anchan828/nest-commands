@@ -22,7 +22,7 @@ $ nest-commands-example author github --open
 This package is creating single executable file using [nexe](https://github.com/nexe/nexe)
 
 ```shell
-$ npm run build
+$ npm run nexe
 > nexe ./dist/index.js
 
 ℹ nexe 3.3.2
