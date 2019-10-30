@@ -1,19 +1,32 @@
 {
   "author": "anchan828 <anchan828@gmail.com>",
+  "description": "> TODO: description",
+  "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands#readme",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "name": "@anchan828/nest-commands",
+  "types": "./dist/index.d.ts",
+  "version": "0.0.0",
   "bugs": {
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
-  "description": "> TODO: description",
+  "dependencies": {
+    "yargs": "14.2.0"
+  },
+  "devDependencies": {
+    "@types/yargs": "13.0.3"
+  },
   "directories": {
     "dist": "dist"
   },
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands#readme",
-  "license": "MIT",
-  "main": "./dist/index.js",
-  "name": "@anchan828/nest-commands",
+  "keywords": [
+    "nestjs",
+    "command",
+    "cli"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anchan828/nest-commands.git"
@@ -27,9 +40,7 @@
     "prepublishOnly": "rm -rf dist && npm run build && rm -f dist/*.tsbuildinfo && npm run copy:license",
     "test": "node ../../node_modules/jest/bin/jest --coverage --logHeapUsage --runInBand",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --logHeapUsage",
-    "test:watch": "node ../../node_modules/jest/bin/jest --watch",
+    "test:watch": "node ../../node_modules/jest/bin/jest --watch --coverage",
     "watch": "node ../../node_modules/typescript/bin/tsc -w"
-  },
-  "types": "./dist/index.d.ts",
-  "version": "0.0.0"
+  }
 }

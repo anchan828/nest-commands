@@ -1,5 +1,5 @@
 {
   "compilerOptions": { "baseUrl": "./src", "outDir": "./dist" },
-  "exclude": ["node_modules", "coverage", "dist", "scripts", "src/**/*.spec.ts"],
+  "exclude": ["node_modules", "coverage", "dist", "scripts", "src/**/*.spec.ts", "examples"],
   "extends": "../../tsconfig.base.json"
 }
