@@ -45,3 +45,8 @@ npx ts-node ./examples/positional-and-option.ts serve --help
 npx ts-node ./examples/many-modules.ts --help
 npx ts-node ./examples/many-modules.ts user show
 ```
+
+## Tips
+
+You can create single executable file using [nexe](https://github.com/nexe/nexe).
+[@anchan828/nest-commands-example](../commands-example)

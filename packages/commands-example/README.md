@@ -16,3 +16,18 @@ $ nest-commands-example author --help
 $ nest-commands-example author twitter
 $ nest-commands-example author github --open
 ```
+
+## Tips
+
+This package is creating single executable file using [nexe](https://github.com/nexe/nexe)
+
+```shell
+$ npm run build
+> nexe ./dist/index.js
+
+ℹ nexe 3.3.2
+✔ Already downloaded...
+✔ Compiling result
+✔ Entry: 'dist/index.js' written to: commands-example
+✔ Finished in 13.014s
+```
