@@ -12,4 +12,4 @@ See: [@anchan828/nest-commands](./packages/commands)
 
 Example package. you can try it out!
 
-See: [@anchan828/nest-commands](./packages/commands)
+See: [@anchan828/nest-commands-example](./packages/commands-example)
