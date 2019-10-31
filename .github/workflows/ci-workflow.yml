@@ -6,15 +6,20 @@ jobs:
   test:
     strategy:
       matrix:
-        node: [10, 12]
+        node: [12, 13]
     name: Test Node v${{ matrix.node }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
         with:
           fetch-depth: 1
+      - name: Cache node_modules
+        uses: actions/cache@preview
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node
       - name: Install npm packages
-        run: npm ci
+        run: npm i
       - name: Lint
         run: npm run lint
       - name: Setup cc-test-reporter
