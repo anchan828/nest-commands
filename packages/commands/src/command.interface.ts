@@ -46,7 +46,7 @@ export interface CommandOptions {
 
 export interface CommandPositionalOptions extends PositionalOptions {
   name: string;
-  required?: boolean;
+  demandPositional?: boolean;
 }
 
 export interface CommandOptionOptions extends Options {

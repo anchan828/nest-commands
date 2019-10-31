@@ -57,13 +57,6 @@ export class CommandService {
 
   private buildCommand(command: Command, argv: yargs.Argv): void {
     const commandName = [command.name];
-    for (const positional of command.positionals) {
-      if (positional.options.required) {
-        commandName.push(`<${positional.options.name}>`);
-      } else {
-        commandName.push(`[${positional.options.name}]`);
-      }
-    }
 
     if (command.positionals.length !== 0) {
       argv.demandCommand();
