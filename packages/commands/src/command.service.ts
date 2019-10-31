@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import * as yargs from "yargs";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
-import { Command, Commander, CommandModuleOptions } from "./command.interface";
+import { Command, Commander, CommandModuleOptions, CommandPositional } from "./command.interface";
 @Injectable()
 export class CommandService {
   public commanders: Commander[] = [];
@@ -58,6 +58,13 @@ export class CommandService {
   private buildCommand(command: Command, argv: yargs.Argv): void {
     const commandName = [command.name];
 
+    for (const positional of command.positionals) {
+      const message = this.printPositional(positional);
+      if (message) {
+        commandName.push(message);
+      }
+    }
+
     if (command.positionals.length !== 0) {
       argv.demandCommand();
     }
@@ -91,6 +98,14 @@ export class CommandService {
         command.instance(...params);
       },
     );
+  }
+
+  private printPositional(positional: CommandPositional): string | undefined {
+    if (positional.options.demandPositional) {
+      return `<${positional.options.name}>`;
+    } else {
+      return `[${positional.options.name}]`;
+    }
   }
 
   private isNestedCommand(commander: Commander): commander is Required<Commander> {
