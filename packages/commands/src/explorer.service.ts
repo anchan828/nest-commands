@@ -62,7 +62,7 @@ export class ExplorerService {
     for (const methodName of this.metadataScanner.getAllFilteredMethodNames(prototype)) {
       const metadata = Reflect.getMetadata(COMMAND_MODULE_COMMAND_DECORATOR, prototype[methodName]);
       if (metadata) {
-        commands.push({ instance: prototype[methodName].bind(prototype), ...metadata });
+        commands.push({ instance: prototype[methodName].bind(instance), ...metadata });
       }
     }
 
