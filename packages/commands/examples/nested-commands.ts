@@ -22,7 +22,7 @@ class TestCommander {
 })
 class TestAppModule {}
 
-(async () => {
+(async (): Promise<void> => {
   const app = await NestFactory.createApplicationContext(TestAppModule, {
     logger: false,
   });

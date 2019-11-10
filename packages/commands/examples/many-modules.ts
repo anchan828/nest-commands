@@ -7,7 +7,7 @@ import { Command, Commander, CommandModule, CommandService } from "../src";
 @Commander({ name: "user" })
 class UserCommander {
   @Command({ name: "show" })
-  public show() {
+  public show(): void {
     console.log("user!");
   }
 }
@@ -20,7 +20,7 @@ class UserModule {}
 @Commander({ name: "group" })
 class GroupCommander {
   @Command({ name: "show" })
-  public show() {
+  public show(): void {
     console.log("group!");
   }
 }
@@ -35,7 +35,7 @@ class GroupModule {}
 })
 class TestAppModule {}
 
-(async () => {
+(async (): Promise<void> => {
   const app = await NestFactory.createApplicationContext(TestAppModule, { logger: false });
   app.get(CommandService).exec();
 })();

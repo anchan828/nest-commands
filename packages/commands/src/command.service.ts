@@ -63,6 +63,10 @@ export class CommandService {
       if (message) {
         commandName.push(message);
       }
+
+      if (positional.options.name.endsWith("..")) {
+        positional.options.name = positional.options.name.replace(/\.\.$/g, "");
+      }
     }
 
     if (command.positionals.length !== 0) {

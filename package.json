@@ -59,7 +59,8 @@
     "publish": "lerna publish --yes patch",
     "publish:major": "lerna publish --yes major",
     "publish:minor": "lerna publish --yes minor",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "watch": "lerna run --parallel watch"
   },
   "private": true
 }
