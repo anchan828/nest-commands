@@ -100,19 +100,24 @@ describe("CommandService", () => {
       const commander = {
         commands: [
           {
-            instance: ((pos1: number, pos2: number) => {
-              mock({ pos1, pos2 });
+            instance: ((pos1: number, pos2: number, files: string[]) => {
+              mock({ files, pos1, pos2 });
             }) as any,
             name: "test",
             options: [],
             positionals: [
               {
-                options: { name: "pos1", required: true, type: "number" },
+                options: { demandPositional: true, name: "pos1", type: "number" },
                 parameterIndex: 0,
               },
               {
                 options: { default: 123, name: "pos2", type: "number" },
                 parameterIndex: 1,
+              },
+
+              {
+                options: { name: "files.." },
+                parameterIndex: 2,
               },
             ],
           },
@@ -120,8 +125,8 @@ describe("CommandService", () => {
         instance: {} as any,
       } as CommanderInterface;
       service.commanders.push(commander);
-      await parse(service, ["test", "111"]);
-      await expect(mock).toHaveBeenCalledWith({ pos1: 111, pos2: 123 });
+      await parse(service, ["test", "111", "222", "file1", "file2", "file3"]);
+      await expect(mock).toHaveBeenCalledWith({ files: ["file1", "file2", "file3"], pos1: 111, pos2: 222 });
     });
 
     it("should set options", async () => {
