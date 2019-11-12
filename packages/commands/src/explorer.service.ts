@@ -29,11 +29,11 @@ export class ExplorerService {
       commander.commands = commands;
     }
 
-    return commanders.filter(commander => commander.commands.length !== 0);
+    return this.mergeCommanders(commanders).filter(commander => commander.commands.length !== 0);
   }
 
   private getCommanders(modules: Module[]): Commander[] {
-    const comamnders: Commander[] = [];
+    const commanders: Commander[] = [];
     const instanceWrappers = modules.map(module => [...module.providers.values()]).reduce((a, b) => a.concat(b), []);
 
     const classInstanceWrappers = instanceWrappers
@@ -47,11 +47,11 @@ export class ExplorerService {
       );
 
       if (metadata) {
-        comamnders.push({ instance: classInstanceWrapper.instance, ...metadata });
+        commanders.push({ instance: classInstanceWrapper.instance, ...metadata });
       }
     }
 
-    return comamnders;
+    return commanders;
   }
 
   private getCommands(commander: Commander): Command[] {
@@ -94,5 +94,19 @@ export class ExplorerService {
     }
 
     return [];
+  }
+
+  private mergeCommanders(commanders: Commander[]): Commander[] {
+    const mergedCommanders: Map<string, Commander> = new Map<string, Commander>();
+    for (const commander of commanders) {
+      const commanderName = commander.name ?? "";
+      if (mergedCommanders.has(commanderName)) {
+        mergedCommanders.get(commanderName)?.commands.push(...commander.commands);
+      } else {
+        mergedCommanders.set(commanderName, commander);
+      }
+    }
+
+    return Array.from(mergedCommanders.values());
   }
 }
