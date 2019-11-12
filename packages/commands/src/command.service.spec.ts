@@ -180,5 +180,47 @@ describe("CommandService", () => {
       await parse(service, ["nested", "test"]);
       await expect(mock).toHaveBeenCalled();
     });
+
+    it("should merge commanders", async () => {
+      const service = new CommandService({ locale: "en_us", scriptName: "test" });
+      service.commanders.push({
+        commands: [
+          {
+            instance: jest.fn(),
+            name: "test",
+            options: [],
+            positionals: [],
+          },
+        ],
+        instance: jest.fn(),
+      } as CommanderInterface);
+      service.commanders.push({
+        commands: [
+          {
+            instance: jest.fn(),
+            name: "test2",
+            options: [],
+            positionals: [],
+          },
+        ],
+        instance: jest.fn(),
+      } as CommanderInterface);
+
+      /**
+       *  test <command>
+       *
+       *  Commands:
+       *    test test
+       *    test test2
+       *
+       *  Options:
+       *    --help     Show help                                                 [boolean]
+       *    --version  Show version number                                       [boolean]
+       */
+      const output = await parse(service, ["--help"]);
+
+      expect(output).toEqual(expect.stringContaining("test test"));
+      expect(output).toEqual(expect.stringContaining("test test2"));
+    });
   });
 });
