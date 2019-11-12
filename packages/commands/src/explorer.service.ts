@@ -29,7 +29,7 @@ export class ExplorerService {
       commander.commands = commands;
     }
 
-    return this.mergeCommanders(commanders).filter(commander => commander.commands.length !== 0);
+    return this.mergeCommanders(commanders);
   }
 
   private getCommanders(modules: Module[]): Commander[] {
@@ -107,6 +107,6 @@ export class ExplorerService {
       }
     }
 
-    return Array.from(mergedCommanders.values());
+    return Array.from(mergedCommanders.values()).filter(commander => commander.commands.length !== 0);
   }
 }
