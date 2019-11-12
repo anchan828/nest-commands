@@ -2,8 +2,8 @@ import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { Command, Commander, CommandModule, CommandService } from "../src";
 
-// ts-node ./examples/merge-commanders --help
-@Commander()
+// ts-node ./examples/merge-commanders merge --help
+@Commander({ name: "merge" })
 class TestCommander1 {
   @Command({ name: "test1" })
   public serve(): void {
@@ -11,7 +11,7 @@ class TestCommander1 {
   }
 }
 
-@Commander()
+@Commander({ name: "merge" })
 class TestCommander2 {
   @Command({ name: "test2" })
   public serve(): void {
