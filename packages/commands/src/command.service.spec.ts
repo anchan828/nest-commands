@@ -68,7 +68,7 @@ describe("CommandService", () => {
 
     it("should throw error if commander doesn't have command", async () => {
       const service = new CommandService({});
-      const commander = { commands: [], instance: {} as any } as CommanderInterface;
+      const commander = { commands: [], instance: {} as any, options: [] } as CommanderInterface;
       service.commanders.push(commander);
       await expect(parse(service, [])).rejects.toThrowError();
     });
@@ -88,13 +88,14 @@ describe("CommandService", () => {
           },
         ],
         instance: {} as any,
+        options: [],
       } as CommanderInterface;
       service.commanders.push(commander);
       await parse(service, ["test"]);
       await expect(mock).toHaveBeenCalled();
     });
 
-    it("should set positionals", async () => {
+    it("should set command positionals", async () => {
       const mock = jest.fn();
       const service = new CommandService({ locale: "en_us" });
       const commander = {
@@ -123,13 +124,14 @@ describe("CommandService", () => {
           },
         ],
         instance: {} as any,
+        options: [],
       } as CommanderInterface;
       service.commanders.push(commander);
       await parse(service, ["test", "111", "222", "file1", "file2", "file3"]);
       await expect(mock).toHaveBeenCalledWith({ files: ["file1", "file2", "file3"], pos1: 111, pos2: 222 });
     });
 
-    it("should set options", async () => {
+    it("should set command options", async () => {
       const mock = jest.fn();
       const service = new CommandService({ locale: "en_us" });
       const commander = {
@@ -153,6 +155,7 @@ describe("CommandService", () => {
           },
         ],
         instance: {} as any,
+        options: [],
       } as CommanderInterface;
       service.commanders.push(commander);
       await parse(service, ["test", "--option1", "111"]);
@@ -175,6 +178,7 @@ describe("CommandService", () => {
         ],
         instance: {} as any,
         name: "nested",
+        options: [],
       } as CommanderInterface;
       service.commanders.push(commander);
       await parse(service, ["nested", "test"]);
@@ -193,6 +197,7 @@ describe("CommandService", () => {
           },
         ],
         instance: jest.fn(),
+        options: [],
       } as CommanderInterface);
       service.commanders.push({
         commands: [
@@ -204,6 +209,7 @@ describe("CommandService", () => {
           },
         ],
         instance: jest.fn(),
+        options: [],
       } as CommanderInterface);
 
       /**
@@ -221,6 +227,45 @@ describe("CommandService", () => {
 
       expect(output).toEqual(expect.stringContaining("test test"));
       expect(output).toEqual(expect.stringContaining("test test2"));
+    });
+
+    it("should set commander option", async () => {
+      const commanderMock = {} as any;
+      const service = new CommandService({ locale: "en_us" });
+      const commander = {
+        commands: [
+          {
+            instance: jest.fn(),
+            name: "test",
+            options: [],
+            positionals: [],
+          },
+        ],
+        instance: commanderMock,
+        options: [
+          {
+            key: "token",
+            options: { demandOption: true, name: "token" },
+          },
+        ],
+      } as CommanderInterface;
+      service.commanders.push(commander);
+      /**
+       * test <command>
+       *
+       * Commands:
+       *   test test
+       *
+       * Options:
+       *   --help     Show help                                                 [boolean]
+       *   --version  Show version number                                       [boolean]
+       *   --token
+       */
+      const output = await parse(service, ["--help"]);
+      expect(output).toEqual(expect.stringContaining("--token"));
+
+      await parse(service, ["test", "--token", "token"]);
+      expect(commanderMock).toStrictEqual({ token: "token" });
     });
   });
 });

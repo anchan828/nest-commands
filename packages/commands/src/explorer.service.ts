@@ -4,11 +4,12 @@ import { ModulesContainer } from "@nestjs/core/injector/modules-container";
 import { MetadataScanner } from "@nestjs/core/metadata-scanner";
 import {
   COMMAND_MODULE_COMMANDER_DECORATOR,
+  COMMAND_MODULE_COMMANDER_OPTION_DECORATOR,
   COMMAND_MODULE_COMMAND_DECORATOR,
   COMMAND_MODULE_COMMAND_OPTION_DECORATOR,
   COMMAND_MODULE_COMMAND_POSITIONAL_DECORATOR,
 } from "./command.constants";
-import { Command, Commander, CommandOption, CommandPositional } from "./command.interface";
+import { Command, Commander, CommanderOption, CommandOption, CommandPositional } from "./command.interface";
 @Injectable()
 export class ExplorerService {
   constructor(private readonly modulesContainer: ModulesContainer, private readonly metadataScanner: MetadataScanner) {}
@@ -21,9 +22,11 @@ export class ExplorerService {
     for (const commander of commanders) {
       const commands = this.getCommands(commander);
 
+      commander.options = this.getCommanderOptions(commander);
+
       for (const command of commands) {
-        command.options = this.getOptions(commander, command);
-        command.positionals = this.getPositionals(commander, command);
+        command.options = this.getCommandOptions(commander, command);
+        command.positionals = this.getCommandPositionals(commander, command);
       }
 
       commander.commands = commands;
@@ -69,7 +72,18 @@ export class ExplorerService {
     return commands;
   }
 
-  private getOptions(commander: Commander, command: Command): CommandOption[] {
+  private getCommanderOptions(commander: Commander): CommanderOption[] {
+    const instance = commander.instance;
+    let options: CommanderOption[] = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_OPTION_DECORATOR, instance);
+
+    if (!Array.isArray(options)) {
+      options = [];
+    }
+
+    return options;
+  }
+
+  private getCommandOptions(commander: Commander, command: Command): CommandOption[] {
     const options = Reflect.getMetadata(
       COMMAND_MODULE_COMMAND_OPTION_DECORATOR,
       commander.instance,
@@ -82,7 +96,7 @@ export class ExplorerService {
     return [];
   }
 
-  private getPositionals(commander: Commander, command: Command): CommandPositional[] {
+  private getCommandPositionals(commander: Commander, command: Command): CommandPositional[] {
     const positionals = Reflect.getMetadata(
       COMMAND_MODULE_COMMAND_POSITIONAL_DECORATOR,
       commander.instance,

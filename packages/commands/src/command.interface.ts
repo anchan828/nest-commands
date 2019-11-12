@@ -53,6 +53,10 @@ export interface CommandOptionOptions extends Options {
   name: string;
 }
 
+export interface CommanderOptionOptions extends Options {
+  name: string;
+}
+
 export interface Command extends CommandOptions {
   instance: Function;
 
@@ -66,6 +70,11 @@ export interface CommandOption {
   options: CommandOptionOptions;
 }
 
+export interface CommanderOption {
+  key: string;
+  options: CommanderOptionOptions;
+}
+
 export interface CommandPositional {
   parameterIndex: number;
   options: CommandPositionalOptions;
@@ -73,6 +82,8 @@ export interface CommandPositional {
 
 export interface Commander extends CommanderOptions {
   commands: Command[];
+
+  options: CommanderOption[];
 
   instance: Function;
 }
