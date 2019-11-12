@@ -1,6 +1,6 @@
 import { MetadataScanner } from "@nestjs/core/metadata-scanner";
 import { Test } from "@nestjs/testing";
-import { Command, Commander, CommandOption, CommandPositional } from "./command.decorator";
+import { Command, Commander, CommanderOption, CommandOption, CommandPositional } from "./command.decorator";
 import { ExplorerService } from "./explorer.service";
 
 describe("ExplorerService", () => {
@@ -52,11 +52,12 @@ describe("ExplorerService", () => {
               },
             ],
             instance: app.get<TestCommander>(TestCommander),
+            options: [],
           },
         ]);
       });
 
-      it("1 commander with 1 option", async () => {
+      it("1 commander with 1 command option", async () => {
         @Commander()
         class TestCommander {
           @Command({ name: "basic" })
@@ -100,6 +101,7 @@ describe("ExplorerService", () => {
               },
             ],
             instance: app.get<TestCommander>(TestCommander),
+            options: [],
           },
         ]);
       });
@@ -144,6 +146,7 @@ describe("ExplorerService", () => {
               },
             ],
             instance: app.get<TestCommander>(TestCommander),
+            options: [],
           },
         ]);
       });
@@ -240,6 +243,57 @@ describe("ExplorerService", () => {
               },
             ],
             instance: app.get<TestCommander>(TestCommander),
+            options: [],
+          },
+        ]);
+      });
+
+      it("1 commander with 2 commander options", async () => {
+        @Commander()
+        class TestCommander {
+          @Command({ name: "basic" })
+          public basic(): void {
+            console.log("hello!");
+          }
+
+          @CommanderOption({ demandOption: true, name: "token1" })
+          public token1!: string;
+
+          @CommanderOption({ demandOption: true, name: "token2" })
+          public token2!: string;
+        }
+        const app = await Test.createTestingModule({
+          providers: [MetadataScanner, ExplorerService, TestCommander],
+        }).compile();
+
+        const service = app.get<ExplorerService>(ExplorerService);
+        expect(service.explore()).toStrictEqual([
+          {
+            commands: [
+              {
+                instance: expect.any(Function),
+                name: "basic",
+                options: [],
+                positionals: [],
+              },
+            ],
+            instance: app.get<TestCommander>(TestCommander),
+            options: [
+              {
+                key: "token1",
+                options: {
+                  demandOption: true,
+                  name: "token1",
+                },
+              },
+              {
+                key: "token2",
+                options: {
+                  demandOption: true,
+                  name: "token2",
+                },
+              },
+            ],
           },
         ]);
       });
@@ -277,6 +331,7 @@ describe("ExplorerService", () => {
             ],
             instance: app.get<Test1Commander>(Test1Commander),
             name: "test1",
+            options: [],
           },
           {
             commands: [
@@ -289,6 +344,7 @@ describe("ExplorerService", () => {
             ],
             instance: app.get<Test2Commander>(Test2Commander),
             name: "test2",
+            options: [],
           },
         ]);
       });
@@ -331,6 +387,7 @@ describe("ExplorerService", () => {
               },
             ],
             instance: app.get<Test1Commander>(Test1Commander),
+            options: [],
           },
         ]);
       });

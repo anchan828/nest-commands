@@ -44,6 +44,8 @@ npx ts-node ./examples/nested-commands.ts nested show --help
 npx ts-node ./examples/positional-and-option.ts serve --help
 npx ts-node ./examples/many-modules.ts --help
 npx ts-node ./examples/many-modules.ts user show
+npx ts-node ./examples/merge-commanders merge --help
+npx ts-node ./examples/commander-option.ts --token token serve
 ```
 
 ## Tips

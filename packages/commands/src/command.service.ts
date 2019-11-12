@@ -53,6 +53,17 @@ export class CommandService {
     for (const command of commander.commands) {
       this.buildCommand(command, argv);
     }
+
+    for (const option of commander.options) {
+      argv.option(option.options.name, option.options);
+      argv.middleware(args => {
+        for (const key of Object.keys(args).filter(key => !["_", "$0"].includes(key))) {
+          if (option.options.name === key) {
+            Reflect.set(commander.instance, option.key, args[option.key]);
+          }
+        }
+      });
+    }
   }
 
   private buildCommand(command: Command, argv: yargs.Argv): void {
@@ -99,6 +110,7 @@ export class CommandService {
             }
           }
         }
+
         command.instance(...params);
       },
     );
