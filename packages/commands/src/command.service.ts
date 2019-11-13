@@ -32,10 +32,6 @@ export class CommandService {
     }
 
     for (const commander of this.commanders) {
-      if (commander.commands.length == 0) {
-        continue;
-      }
-
       if (this.isNestedCommand(commander)) {
         yargs.command(commander.name, commander.describe || "", y => {
           this.buildCommander(commander, y);
