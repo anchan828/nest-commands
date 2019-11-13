@@ -31,7 +31,6 @@ export class ExplorerService {
 
       commander.commands = commands;
     }
-
     return this.mergeCommanders(commanders);
   }
 
@@ -121,6 +120,8 @@ export class ExplorerService {
       }
     }
 
-    return Array.from(mergedCommanders.values()).filter(commander => commander.commands.length !== 0);
+    return Array.from(mergedCommanders.values()).filter(
+      commander => commander.commands.length !== 0 || commander.options.length !== 0,
+    );
   }
 }
