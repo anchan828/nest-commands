@@ -34,6 +34,94 @@ class TestAppModule {}
 })();
 ```
 
+### CommandModule.register
+
+You can set some options
+
+```typescript
+CommandModule.register({
+   /**
+   * Set to yargs.scriptName
+   *
+   * @type {string}
+   * @memberof CommandModuleOptions
+   */
+  scriptName?: string;
+
+  /**
+   * Set to yargs.usage
+   *
+   * @type {string}
+   * @memberof CommandModuleOptions
+   */
+  usage?: string;
+
+  /**
+   * Set to yargs.locale
+   *
+   * @type {string}
+   * @memberof CommandModuleOptions
+   */
+  locale?: string;
+})
+```
+
+### Nested command
+
+If you want to use nested command, add name to commander.
+
+```typescript
+@Commander({ name: "nested" })
+class TestCommander {
+  @Command({ name: "command1" })
+  public command1(): void {
+    console.log("Run nested command1");
+  }
+
+  @Command({ name: "command2" })
+  public command2(): void {
+    console.log("Run nested command2");
+  }
+}
+```
+
+### Global options
+
+You can set options to top level. Use `@CommanderOption` and no set commander name
+
+```typescript
+@Commander()
+class GlobalOptions {
+  @CommanderOption({
+    description: "Output as json",
+    name: "json",
+    type: "boolean",
+  })
+  public json!: boolean;
+}
+```
+
+### Array positional
+
+If you want to array positional, add `..` at the end.
+
+```typescript
+@Commander()
+class TestCommander {
+  @Command({ describe: "array positional", name: "list" })
+  public serve(
+    @CommandPositional({
+      describe: "show files",
+      name: "files..",
+    })
+    files: string[],
+  ): void {
+    console.log("Run array positional command");
+    console.log(files);
+  }
+}
+```
+
 ## Example
 
 You can try to run command!
@@ -47,6 +135,7 @@ npx ts-node ./examples/many-modules.ts user show
 npx ts-node ./examples/array-positional.ts list test1 test2
 npx ts-node ./examples/merge-commanders merge --help
 npx ts-node ./examples/commander-option.ts --token token serve
+npx ts-node ./examples/global-options.ts --json test show
 ```
 
 ## Tips

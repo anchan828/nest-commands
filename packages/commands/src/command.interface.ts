@@ -1,10 +1,28 @@
 import { Options, PositionalOptions } from "yargs";
 
 export interface CommandModuleOptions {
+  /**
+   * Set to yargs.scriptName
+   *
+   * @type {string}
+   * @memberof CommandModuleOptions
+   */
   scriptName?: string;
 
+  /**
+   * Set to yargs.usage
+   *
+   * @type {string}
+   * @memberof CommandModuleOptions
+   */
   usage?: string;
 
+  /**
+   * Set to yargs.locale
+   *
+   * @type {string}
+   * @memberof CommandModuleOptions
+   */
   locale?: string;
 }
 
