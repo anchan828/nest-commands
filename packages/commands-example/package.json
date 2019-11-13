@@ -4,7 +4,7 @@
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
   "dependencies": {
-    "@anchan828/nest-commands": "^0.0.12",
+    "@anchan828/nest-commands": "^0.0.13",
     "@nestjs/common": "6.9.0",
     "@nestjs/core": "6.9.0",
     "open": "7.0.0",
@@ -44,7 +44,7 @@
     "watch": "node ../../node_modules/typescript/bin/tsc -w"
   },
   "types": "./dist/index.d.ts",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "bin": {
     "nest-commands-example": "./dist/index.js"
   }
