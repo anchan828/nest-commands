@@ -114,6 +114,35 @@ class GlobalOptions {
 }
 ```
 
+### positional and option
+
+```typescript
+@Commander()
+class TestCommander {
+  // See: https://github.com/yargs/yargs#complex-example
+  @Command({ describe: "start the server", name: "serve" })
+  public serve(
+    @CommandPositional({
+      default: 5000,
+      describe: "port to bind on",
+      name: "port",
+    })
+    port: number,
+    @CommandOption({
+      alias: "v",
+      default: false,
+      description: "Run with verbose logging",
+      name: "verbose",
+      type: "boolean",
+    })
+    verbose: boolean,
+  ): void {
+    console.log(`port is ${port}`);
+    console.log(`verbose is ${verbose}`);
+  }
+}
+```
+
 ### Array positional
 
 If you want to array positional, add `..` at the end.
