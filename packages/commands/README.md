@@ -2,6 +2,19 @@
 
 Make command line tools based on yargs.
 
+```bash
+$ nest-commands-example --help
+nest-commands-example <command>
+
+Commands:
+  nest-commands-example author  Show author information
+  nest-commands-example file    Show file information
+
+Options:
+  --help     Show help                           [boolean]
+  --version  Show version number                 [boolean]
+```
+
 ## Install
 
 ```shell
