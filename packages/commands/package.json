@@ -11,7 +11,7 @@
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
   "dependencies": {
-    "yargs": "14.2.2"
+    "yargs": "15.0.2"
   },
   "devDependencies": {
     "@types/yargs": "13.0.3"
