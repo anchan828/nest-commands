@@ -1,3 +1,5 @@
+import { Type } from "@nestjs/common";
+import { ModuleMetadata } from "@nestjs/common/interfaces";
 import { Options, PositionalOptions } from "yargs";
 
 export interface CommandModuleOptions {
@@ -24,6 +26,22 @@ export interface CommandModuleOptions {
    * @memberof CommandModuleOptions
    */
   locale?: string;
+}
+
+export type CommandModuleAsyncOptions = {
+  useClass?: Type<CommandModuleOptionsFactory>;
+  /**
+   * The factory which should be used to provide the Bull options
+   */
+  useFactory?: (...args: unknown[]) => Promise<CommandModuleOptions> | CommandModuleOptions;
+  /**
+   * The providers which should get injected
+   */
+  inject?: Array<Type<any> | string | any>;
+} & Pick<ModuleMetadata, "imports">;
+
+export interface CommandModuleOptionsFactory {
+  createCommandModuleOptions(): Promise<CommandModuleOptions> | CommandModuleOptions;
 }
 
 export interface CommanderOptions {

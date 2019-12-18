@@ -4,9 +4,9 @@
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
   "dependencies": {
-    "@anchan828/nest-commands": "^0.0.17",
-    "@nestjs/common": "6.10.10",
-    "@nestjs/core": "6.10.10",
+    "@anchan828/nest-commands": "^0.0.18",
+    "@nestjs/common": "6.10.11",
+    "@nestjs/core": "6.10.11",
     "open": "7.0.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.5.3"
@@ -44,7 +44,7 @@
     "watch": "node ../../node_modules/typescript/bin/tsc -w"
   },
   "types": "./dist/index.d.ts",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "bin": {
     "nest-commands-example": "./dist/index.js"
   }

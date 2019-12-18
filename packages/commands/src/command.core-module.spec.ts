@@ -1,30 +1,29 @@
 import { MetadataScanner } from "@nestjs/core/metadata-scanner";
 import { Test } from "@nestjs/testing";
+import { CommandService } from ".";
+import { COMMAND_MODULE_OPTIONS } from "./command.constants";
+import { CommandCoreModule } from "./command.core-module";
+import { CommandModuleOptions, CommandModuleOptionsFactory } from "./command.interface";
 import { CommandModule } from "./command.module";
-import { CommandService } from "./command.service";
 import { ExplorerService } from "./explorer.service";
-describe("CommandModule", () => {
+describe("CommandCoreModule", () => {
   it("should be defined", () => {
     expect(CommandModule).toBeDefined();
   });
 
   describe("register", () => {
     it("should compile", async () => {
-      await expect(Test.createTestingModule({ imports: [CommandModule.register()] }).compile()).resolves.toBeDefined();
+      await expect(
+        Test.createTestingModule({ imports: [CommandCoreModule.register({})] }).compile(),
+      ).resolves.toBeDefined();
     });
 
     it("should get providers", async () => {
-      const module = await Test.createTestingModule({ imports: [CommandModule.register()] }).compile();
+      const module = await Test.createTestingModule({ imports: [CommandCoreModule.register({})] }).compile();
       expect(module.get(ExplorerService)).toBeDefined();
       expect(module.get(CommandService)).toBeDefined();
       expect(module.get(MetadataScanner)).toBeDefined();
-    });
-
-    it("should run", async () => {
-      const module = await Test.createTestingModule({ imports: [CommandModule.register()] }).compile();
-      await module.init();
-      module.get(CommandService).exec();
-      await module.close();
+      expect(module.get(COMMAND_MODULE_OPTIONS)).toBeDefined();
     });
   });
 
@@ -33,7 +32,7 @@ describe("CommandModule", () => {
       await expect(
         Test.createTestingModule({
           imports: [
-            CommandModule.registerAsync({
+            CommandCoreModule.registerAsync({
               useFactory: () => ({}),
             }),
           ],
@@ -44,7 +43,7 @@ describe("CommandModule", () => {
     it("should get providers", async () => {
       const module = await Test.createTestingModule({
         imports: [
-          CommandModule.registerAsync({
+          CommandCoreModule.registerAsync({
             useFactory: () => ({}),
           }),
         ],
@@ -52,13 +51,32 @@ describe("CommandModule", () => {
       expect(module.get(ExplorerService)).toBeDefined();
       expect(module.get(CommandService)).toBeDefined();
       expect(module.get(MetadataScanner)).toBeDefined();
+      expect(module.get(COMMAND_MODULE_OPTIONS)).toBeDefined();
     });
 
-    it("should run", async () => {
+    it("should run if use useFactory", async () => {
       const module = await Test.createTestingModule({
         imports: [
           CommandModule.registerAsync({
             useFactory: () => ({}),
+          }),
+        ],
+      }).compile();
+      await module.init();
+      module.get(CommandService).exec();
+      await module.close();
+    });
+
+    it("should run if use useFactory", async () => {
+      class TestClass implements CommandModuleOptionsFactory {
+        createCommandModuleOptions(): CommandModuleOptions {
+          return {};
+        }
+      }
+      const module = await Test.createTestingModule({
+        imports: [
+          CommandModule.registerAsync({
+            useClass: TestClass,
           }),
         ],
       }).compile();
