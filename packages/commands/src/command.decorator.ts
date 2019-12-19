@@ -1,4 +1,3 @@
-import { SetMetadata } from "@nestjs/common";
 import {
   COMMAND_MODULE_COMMANDER_DECORATOR,
   COMMAND_MODULE_COMMANDER_OPTION_DECORATOR,
@@ -16,16 +15,21 @@ import {
   CommandPositionalOptions,
 } from "./command.interface";
 
-export function Commander(options?: CommanderOptions): Function {
-  return SetMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, options || {});
+export function Commander(options?: CommanderOptions): ClassDecorator {
+  return (constructor: Function): void => {
+    Reflect.defineMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, options || {}, constructor);
+  };
 }
 
-export function Command(options: CommandOptions): Function {
-  return SetMetadata(COMMAND_MODULE_COMMAND_DECORATOR, options);
+export function Command(options: CommandOptions): MethodDecorator {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  return (target: Record<string, any>, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
+    Reflect.defineMetadata(COMMAND_MODULE_COMMAND_DECORATOR, options, descriptor.value);
+  };
 }
 
-export function CommanderOption(options: CommandOptionOptions): Function {
-  return async (target: any, key: string): Promise<any> => {
+export function CommanderOption(options: CommandOptionOptions): PropertyDecorator {
+  return (target: Record<string, any>, key: string | symbol): void => {
     const commanderOption = { key, options } as CommanderOption;
 
     let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_OPTION_DECORATOR, target) as
@@ -48,8 +52,8 @@ export function CommanderOption(options: CommandOptionOptions): Function {
   };
 }
 
-export function CommandPositional(options: CommandPositionalOptions): Function {
-  return (target: any, key: string, parameterIndex: number): any => {
+export function CommandPositional(options: CommandPositionalOptions): ParameterDecorator {
+  return (target: any, key: string | symbol, parameterIndex: number): void => {
     const positional = { options, parameterIndex } as CommandPositional;
 
     let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMAND_POSITIONAL_DECORATOR, target, key) as
@@ -70,8 +74,8 @@ export function CommandPositional(options: CommandPositionalOptions): Function {
   };
 }
 
-export function CommandOption(options: CommandOptionOptions): Function {
-  return (target: any, key: string, parameterIndex: number): any => {
+export function CommandOption(options: CommandOptionOptions): ParameterDecorator {
+  return (target: any, key: string | symbol, parameterIndex: number): any => {
     const option = { options, parameterIndex } as CommandOption;
 
     let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMAND_OPTION_DECORATOR, target, key) as
