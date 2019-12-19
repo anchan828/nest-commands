@@ -1,4 +1,4 @@
-import { MetadataScanner } from "@nestjs/core/metadata-scanner";
+import { DiscoveryModule } from "@nestjs/core";
 import { Test } from "@nestjs/testing";
 import { Command, Commander, CommanderOption, CommandOption, CommandPositional } from "./command.decorator";
 import { ExplorerService } from "./explorer.service";
@@ -11,7 +11,8 @@ describe("ExplorerService", () => {
   describe("explore", () => {
     it("should be defined", async () => {
       const app = await Test.createTestingModule({
-        providers: [MetadataScanner, ExplorerService],
+        imports: [DiscoveryModule],
+        providers: [ExplorerService],
       }).compile();
 
       const service = app.get<ExplorerService>(ExplorerService);
@@ -21,7 +22,8 @@ describe("ExplorerService", () => {
     describe("should run explore", () => {
       it("no commander", async () => {
         const app = await Test.createTestingModule({
-          providers: [MetadataScanner, ExplorerService],
+          imports: [DiscoveryModule],
+          providers: [ExplorerService],
         }).compile();
 
         const service = app.get<ExplorerService>(ExplorerService);
@@ -37,7 +39,8 @@ describe("ExplorerService", () => {
           }
         }
         const app = await Test.createTestingModule({
-          providers: [MetadataScanner, ExplorerService, TestCommander],
+          imports: [DiscoveryModule],
+          providers: [ExplorerService, TestCommander],
         }).compile();
 
         const service = app.get<ExplorerService>(ExplorerService);
@@ -75,7 +78,8 @@ describe("ExplorerService", () => {
           }
         }
         const app = await Test.createTestingModule({
-          providers: [MetadataScanner, ExplorerService, TestCommander],
+          imports: [DiscoveryModule],
+          providers: [ExplorerService, TestCommander],
         }).compile();
 
         const service = app.get<ExplorerService>(ExplorerService);
@@ -122,7 +126,8 @@ describe("ExplorerService", () => {
           }
         }
         const app = await Test.createTestingModule({
-          providers: [MetadataScanner, ExplorerService, TestCommander],
+          imports: [DiscoveryModule],
+          providers: [ExplorerService, TestCommander],
         }).compile();
 
         const service = app.get<ExplorerService>(ExplorerService);
@@ -190,7 +195,8 @@ describe("ExplorerService", () => {
           }
         }
         const app = await Test.createTestingModule({
-          providers: [MetadataScanner, ExplorerService, TestCommander],
+          imports: [DiscoveryModule],
+          providers: [ExplorerService, TestCommander],
         }).compile();
 
         const service = app.get<ExplorerService>(ExplorerService);
@@ -263,7 +269,8 @@ describe("ExplorerService", () => {
           public token2!: string;
         }
         const app = await Test.createTestingModule({
-          providers: [MetadataScanner, ExplorerService, TestCommander],
+          imports: [DiscoveryModule],
+          providers: [ExplorerService, TestCommander],
         }).compile();
 
         const service = app.get<ExplorerService>(ExplorerService);
@@ -315,7 +322,8 @@ describe("ExplorerService", () => {
           }
         }
         const app = await Test.createTestingModule({
-          providers: [MetadataScanner, ExplorerService, Test1Commander, Test2Commander],
+          imports: [DiscoveryModule],
+          providers: [ExplorerService, Test1Commander, Test2Commander],
         }).compile();
 
         const service = app.get<ExplorerService>(ExplorerService);
@@ -366,7 +374,8 @@ describe("ExplorerService", () => {
           }
         }
         const app = await Test.createTestingModule({
-          providers: [MetadataScanner, ExplorerService, Test1Commander, Test2Commander],
+          imports: [DiscoveryModule],
+          providers: [ExplorerService, Test1Commander, Test2Commander],
         }).compile();
 
         const service = app.get<ExplorerService>(ExplorerService);

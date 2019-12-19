@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Module } from "@nestjs/core/injector/module";
-import { ModulesContainer } from "@nestjs/core/injector/modules-container";
+import { DiscoveryService } from "@nestjs/core";
 import { MetadataScanner } from "@nestjs/core/metadata-scanner";
 import {
   COMMAND_MODULE_COMMANDER_DECORATOR,
@@ -12,12 +11,10 @@ import {
 import { Command, Commander, CommanderOption, CommandOption, CommandPositional } from "./command.interface";
 @Injectable()
 export class ExplorerService {
-  constructor(private readonly modulesContainer: ModulesContainer, private readonly metadataScanner: MetadataScanner) {}
+  constructor(private readonly discoveryService: DiscoveryService, private readonly metadataScanner: MetadataScanner) {}
 
   public explore(): Commander[] {
-    const modules = [...this.modulesContainer.values()];
-
-    const commanders = this.getCommanders(modules);
+    const commanders = this.getCommanders();
 
     for (const commander of commanders) {
       const commands = this.getCommands(commander);
@@ -34,11 +31,11 @@ export class ExplorerService {
     return this.mergeCommanders(commanders);
   }
 
-  private getCommanders(modules: Module[]): Commander[] {
+  private getCommanders(): Commander[] {
     const commanders: Commander[] = [];
-    const instanceWrappers = modules.map(module => [...module.providers.values()]).reduce((a, b) => a.concat(b), []);
 
-    const classInstanceWrappers = instanceWrappers
+    const classInstanceWrappers = this.discoveryService
+      .getProviders()
       .filter(instanceWrapper => instanceWrapper.instance)
       .filter(({ instance }) => instance.constructor);
 

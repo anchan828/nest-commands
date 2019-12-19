@@ -1,13 +1,14 @@
 import { DynamicModule, Module, OnModuleInit, Provider } from "@nestjs/common";
 import { ClassProvider, FactoryProvider } from "@nestjs/common/interfaces";
-import { MetadataScanner } from "@nestjs/core/metadata-scanner";
+import { DiscoveryModule } from "@nestjs/core";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
 import { CommandModuleAsyncOptions, CommandModuleOptions, CommandModuleOptionsFactory } from "./command.interface";
 import { CommandService } from "./command.service";
 import { ExplorerService } from "./explorer.service";
 @Module({
   exports: [CommandService],
-  providers: [ExplorerService, CommandService, MetadataScanner],
+  imports: [DiscoveryModule],
+  providers: [ExplorerService, CommandService],
 })
 export class CommandCoreModule implements OnModuleInit {
   constructor(private readonly explorer: ExplorerService, private readonly service: CommandService) {}
