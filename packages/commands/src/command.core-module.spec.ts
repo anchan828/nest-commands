@@ -1,3 +1,4 @@
+import { Module } from "@nestjs/common";
 import { MetadataScanner } from "@nestjs/core/metadata-scanner";
 import { Test } from "@nestjs/testing";
 import { CommandService } from ".";
@@ -67,7 +68,7 @@ describe("CommandCoreModule", () => {
       await module.close();
     });
 
-    it("should run if use useFactory", async () => {
+    it("should run if use useClass", async () => {
       class TestClass implements CommandModuleOptionsFactory {
         createCommandModuleOptions(): CommandModuleOptions {
           return {};
@@ -77,6 +78,32 @@ describe("CommandCoreModule", () => {
         imports: [
           CommandModule.registerAsync({
             useClass: TestClass,
+          }),
+        ],
+      }).compile();
+      await module.init();
+      module.get(CommandService).exec();
+      await module.close();
+    });
+
+    it("should run if use useExisting", async () => {
+      class TestClass implements CommandModuleOptionsFactory {
+        createCommandModuleOptions(): CommandModuleOptions {
+          return {};
+        }
+      }
+
+      @Module({
+        exports: [TestClass],
+        providers: [TestClass],
+      })
+      class TestModule {}
+
+      const module = await Test.createTestingModule({
+        imports: [
+          CommandModule.registerAsync({
+            imports: [TestModule],
+            useExisting: TestClass,
           }),
         ],
       }).compile();
