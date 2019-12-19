@@ -30,14 +30,9 @@ export interface CommandModuleOptions {
 
 export type CommandModuleAsyncOptions = {
   useClass?: Type<CommandModuleOptionsFactory>;
-  /**
-   * The factory which should be used to provide the Bull options
-   */
+  useExisting?: Type<CommandModuleOptionsFactory>;
   useFactory?: (...args: unknown[]) => Promise<CommandModuleOptions> | CommandModuleOptions;
-  /**
-   * The providers which should get injected
-   */
-  inject?: Array<Type<any> | string | any>;
+  inject?: Array<Type<CommandModuleOptionsFactory> | string | any>;
 } & Pick<ModuleMetadata, "imports">;
 
 export interface CommandModuleOptionsFactory {

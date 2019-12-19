@@ -1,5 +1,5 @@
 import { DynamicModule, Module, OnModuleInit, Provider } from "@nestjs/common";
-import { ClassProvider, FactoryProvider } from "@nestjs/common/interfaces";
+import { ClassProvider, FactoryProvider, Type } from "@nestjs/common/interfaces";
 import { DiscoveryModule } from "@nestjs/core";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
 import { CommandModuleAsyncOptions, CommandModuleOptions, CommandModuleOptionsFactory } from "./command.interface";
@@ -35,13 +35,13 @@ export class CommandCoreModule implements OnModuleInit {
   }
 
   private static createAsyncProviders(options: CommandModuleAsyncOptions): Provider[] {
-    if (options.useFactory) {
-      return [this.createAsyncOptionsProvider(options)];
+    const asyncOptionsProvider = this.createAsyncOptionsProvider(options);
+    if (options.useExisting || options.useFactory) {
+      return [asyncOptionsProvider];
     }
     return [
-      this.createAsyncOptionsProvider(options),
+      asyncOptionsProvider,
       {
-        inject: [options.inject || []],
         provide: options.useClass,
         useClass: options.useClass,
       } as ClassProvider,
@@ -57,7 +57,9 @@ export class CommandCoreModule implements OnModuleInit {
       };
     }
     return {
-      inject: options.useClass ? [options.useClass] : [],
+      inject: [options.useClass, options.useExisting].filter(
+        (x): x is Type<CommandModuleOptionsFactory> => x !== undefined,
+      ),
       provide: COMMAND_MODULE_OPTIONS,
       useFactory: async (optionsFactory: CommandModuleOptionsFactory): Promise<CommandModuleOptions> =>
         await optionsFactory.createCommandModuleOptions(),
