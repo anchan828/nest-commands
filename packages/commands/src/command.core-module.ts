@@ -57,7 +57,7 @@ export class CommandCoreModule implements OnModuleInit {
       };
     }
     return {
-      inject: [options.useClass, options.useExisting].filter(
+      inject: [options.useClass || options.useExisting].filter(
         (x): x is Type<CommandModuleOptionsFactory> => x !== undefined,
       ),
       provide: COMMAND_MODULE_OPTIONS,
