@@ -28,12 +28,12 @@ export interface CommandModuleOptions {
   locale?: string;
 }
 
-export type CommandModuleAsyncOptions = {
+export interface CommandModuleAsyncOptions extends Pick<ModuleMetadata, "imports"> {
   useClass?: Type<CommandModuleOptionsFactory>;
   useExisting?: Type<CommandModuleOptionsFactory>;
   useFactory?: (...args: unknown[]) => Promise<CommandModuleOptions> | CommandModuleOptions;
   inject?: Array<Type<CommandModuleOptionsFactory> | string | any>;
-} & Pick<ModuleMetadata, "imports">;
+}
 
 export interface CommandModuleOptionsFactory {
   createCommandModuleOptions(): Promise<CommandModuleOptions> | CommandModuleOptions;
