@@ -36,14 +36,10 @@ export class ExplorerService {
 
     const classInstanceWrappers = this.discoveryService
       .getProviders()
-      .filter(instanceWrapper => instanceWrapper.instance)
-      .filter(({ instance }) => instance.constructor);
+      .filter(instanceWrapper => !instanceWrapper.isNotMetatype);
 
     for (const classInstanceWrapper of classInstanceWrappers) {
-      const metadata = Reflect.getMetadata(
-        COMMAND_MODULE_COMMANDER_DECORATOR,
-        classInstanceWrapper.instance.constructor,
-      );
+      const metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, classInstanceWrapper.metatype);
 
       if (metadata) {
         commanders.push({ instance: classInstanceWrapper.instance, ...metadata });
