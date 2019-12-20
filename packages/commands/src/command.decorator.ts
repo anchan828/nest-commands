@@ -1,3 +1,4 @@
+import { SetMetadata } from "@nestjs/common";
 import {
   COMMAND_MODULE_COMMANDER_DECORATOR,
   COMMAND_MODULE_COMMANDER_OPTION_DECORATOR,
@@ -16,16 +17,11 @@ import {
 } from "./command.interface";
 
 export function Commander(options?: CommanderOptions): ClassDecorator {
-  return (constructor: Function): void => {
-    Reflect.defineMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, options || {}, constructor);
-  };
+  return SetMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, options || {});
 }
 
 export function Command(options: CommandOptions): MethodDecorator {
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  return (target: Record<string, any>, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
-    Reflect.defineMetadata(COMMAND_MODULE_COMMAND_DECORATOR, options, descriptor.value);
-  };
+  return SetMetadata(COMMAND_MODULE_COMMAND_DECORATOR, options);
 }
 
 export function CommanderOption(options: CommandOptionOptions): PropertyDecorator {
