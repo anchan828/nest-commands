@@ -36,7 +36,7 @@ export class ExplorerService {
 
     const classInstanceWrappers = this.discoveryService
       .getProviders()
-      .filter(instanceWrapper => !instanceWrapper.isNotMetatype);
+      .filter(instanceWrapper => instanceWrapper.metatype);
 
     for (const classInstanceWrapper of classInstanceWrappers) {
       const metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, classInstanceWrapper.metatype);
