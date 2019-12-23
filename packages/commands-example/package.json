@@ -12,7 +12,7 @@
     "rxjs": "6.5.3"
   },
   "devDependencies": {
-    "@types/yargs": "13.0.3",
+    "@types/yargs": "13.0.4",
     "nexe": "3.3.2"
   },
   "description": "> TODO: description",
