@@ -9,7 +9,7 @@
     "@nestjs/core": "6.10.13",
     "open": "7.0.0",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.5.3"
+    "rxjs": "6.5.4"
   },
   "devDependencies": {
     "@types/yargs": "13.0.4",
