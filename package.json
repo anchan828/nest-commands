@@ -11,9 +11,9 @@
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
   "devDependencies": {
-    "@commitlint/cli": "8.2.0",
-    "@commitlint/config-conventional": "8.2.0",
-    "@commitlint/config-lerna-scopes": "8.2.0",
+    "@commitlint/cli": "8.3.3",
+    "@commitlint/config-conventional": "8.3.3",
+    "@commitlint/config-lerna-scopes": "8.3.2",
     "@compodoc/compodoc": "1.1.11",
     "@nestjs/common": "6.10.13",
     "@nestjs/core": "6.10.13",
