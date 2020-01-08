@@ -14,7 +14,7 @@
     "yargs": "15.1.0"
   },
   "devDependencies": {
-    "@types/yargs": "13.0.4"
+    "@types/yargs": "13.0.5"
   },
   "directories": {
     "dist": "dist"
