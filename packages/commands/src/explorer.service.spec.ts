@@ -99,6 +99,7 @@ describe("ExplorerService", () => {
                       type: "boolean",
                     },
                     parameterIndex: 0,
+                    pipes: [],
                   },
                 ],
                 positionals: [],
@@ -146,6 +147,7 @@ describe("ExplorerService", () => {
                       name: "port",
                     },
                     parameterIndex: 0,
+                    pipes: [],
                   },
                 ],
               },
@@ -216,6 +218,7 @@ describe("ExplorerService", () => {
                       type: "boolean",
                     },
                     parameterIndex: 1,
+                    pipes: [],
                   },
                   {
                     options: {
@@ -226,6 +229,7 @@ describe("ExplorerService", () => {
                       type: "boolean",
                     },
                     parameterIndex: 3,
+                    pipes: [],
                   },
                 ],
                 positionals: [
@@ -236,6 +240,7 @@ describe("ExplorerService", () => {
                       name: "port1",
                     },
                     parameterIndex: 0,
+                    pipes: [],
                   },
                   {
                     options: {
@@ -244,6 +249,7 @@ describe("ExplorerService", () => {
                       name: "port2",
                     },
                     parameterIndex: 2,
+                    pipes: [],
                   },
                 ],
               },
@@ -292,6 +298,7 @@ describe("ExplorerService", () => {
                   demandOption: true,
                   name: "token1",
                 },
+                pipes: [],
               },
               {
                 key: "token2",
@@ -299,6 +306,7 @@ describe("ExplorerService", () => {
                   demandOption: true,
                   name: "token2",
                 },
+                pipes: [],
               },
             ],
           },

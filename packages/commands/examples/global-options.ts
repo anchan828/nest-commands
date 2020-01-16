@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { Command, Commander, CommanderOption, CommandModule, CommandService } from "../src";
 
-// ts-node ./examples/global-options.ts --json test show
+// ts-node -T ./examples/global-options.ts --json test show
 
 @Commander()
 class GlobalOptions {

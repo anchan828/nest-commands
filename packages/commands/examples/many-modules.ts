@@ -2,8 +2,8 @@ import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { Command, Commander, CommandModule, CommandService } from "../src";
 
-// ts-node ./examples/many-modules.ts --help
-// ts-node ./examples/many-modules.ts user show
+// ts-node -T ./examples/many-modules.ts --help
+// ts-node -T ./examples/many-modules.ts user show
 @Commander({ name: "user" })
 class UserCommander {
   @Command({ name: "show" })

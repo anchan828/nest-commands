@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { Command, Commander, CommandModule, CommandService } from "../src";
 
-// ts-node ./examples/nested-commands.ts --help
+// ts-node -T ./examples/nested-commands.ts --help
 @Commander({ describe: "nested command", name: "nested" })
 class TestCommander {
   @Command({ describe: "exec nested command", name: "show" })

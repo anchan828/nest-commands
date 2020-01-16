@@ -1,51 +1,56 @@
-import { Inject, Injectable } from "@nestjs/common";
-import * as yargs from "yargs";
+import { Inject, Injectable, PipeTransform } from "@nestjs/common";
+import { DiscoveryService } from "@nestjs/core";
+import * as Yargs from "yargs";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
-import { Command, Commander, CommandModuleOptions, CommandPositional } from "./command.interface";
+import { Command, Commander, CommandModuleOptions, CommandPositional, PipeTransformArg } from "./command.interface";
 @Injectable()
 export class CommandService {
   public commanders: Commander[] = [];
 
-  constructor(@Inject(COMMAND_MODULE_OPTIONS) private readonly options: CommandModuleOptions) {
-    yargs.reset();
+  private readonly yargs: Yargs.Argv;
+
+  constructor(
+    @Inject(COMMAND_MODULE_OPTIONS) private readonly options: CommandModuleOptions,
+    private readonly discovery: DiscoveryService,
+  ) {
+    this.yargs = Yargs(process.argv.slice(2));
   }
 
   public exec(): void {
     if (this.commanders.length === 0) {
       return;
     }
-
     this.parser().argv;
   }
 
-  private parser(): yargs.Argv {
+  private parser(): Yargs.Argv {
     if (this.options.scriptName) {
-      yargs.scriptName(this.options.scriptName);
+      this.yargs.scriptName(this.options.scriptName);
     }
 
     if (this.options.usage) {
-      yargs.usage(this.options.usage);
+      this.yargs.usage(this.options.usage);
     }
 
     if (this.options.locale) {
-      yargs.locale(this.options.locale);
+      this.yargs.locale(this.options.locale);
     }
 
     for (const commander of this.commanders) {
       if (this.isNestedCommand(commander)) {
-        yargs.command(commander.name, commander.describe || "", y => {
+        this.yargs.command(commander.name, commander.describe || "", y => {
           this.buildCommander(commander, y);
           return y.showHelpOnFail(true).demandCommand();
         });
       } else {
-        this.buildCommander(commander, yargs);
+        this.buildCommander(commander, this.yargs);
       }
     }
 
-    return yargs.showHelpOnFail(true).demandCommand();
+    return this.yargs.showHelpOnFail(true).demandCommand();
   }
 
-  private buildCommander(commander: Commander, argv: yargs.Argv): void {
+  private buildCommander(commander: Commander, argv: Yargs.Argv): void {
     for (const command of commander.commands) {
       this.buildCommand(command, argv);
     }
@@ -55,14 +60,14 @@ export class CommandService {
       argv.middleware(args => {
         for (const key of Object.keys(args).filter(key => !["_", "$0"].includes(key))) {
           if (option.options.name === key) {
-            Reflect.set(commander.instance, option.key, args[key]);
+            Reflect.set(commander.instance, option.key, this.transformValue(args[key], option.pipes));
           }
         }
       });
     }
   }
 
-  private buildCommand(command: Command, argv: yargs.Argv): void {
+  private buildCommand(command: Command, argv: Yargs.Argv): void {
     const commandName = [command.name];
 
     for (const positional of command.positionals) {
@@ -79,7 +84,7 @@ export class CommandService {
     if (command.positionals.length !== 0) {
       argv.demandCommand();
     }
-
+    // command: string | ReadonlyArray<string>, description: string, builder?: BuilderCallback<T, U>, handler?: (args: Arguments<U>) => void
     argv.command(
       commandName.join(" "),
       command.describe || "",
@@ -97,12 +102,12 @@ export class CommandService {
         for (const key of Object.keys(args).filter(key => !["_", "$0"].includes(key))) {
           for (const positional of command.positionals) {
             if (positional.options.name === key || positional.options.alias === key) {
-              params[positional.parameterIndex] = args[key];
+              params[positional.parameterIndex] = this.transformValue(args[key], positional.pipes);
             }
           }
           for (const option of command.options) {
             if (option.options.name === key || option.options.alias === key) {
-              params[option.parameterIndex] = args[key];
+              params[option.parameterIndex] = this.transformValue(args[key], option.pipes);
             }
           }
         }
@@ -122,5 +127,27 @@ export class CommandService {
 
   private isNestedCommand(commander: Commander): commander is Required<Commander> {
     return commander.name !== undefined;
+  }
+
+  private transformValue<T = any>(value: T, pipes: PipeTransformArg[] = []): T {
+    let result = value;
+    for (const pipe of pipes) {
+      const pipeInstance = typeof pipe === "function" ? this.getPipeTransformInstance(pipe) : pipe;
+      if (this.isPipeTransform(pipeInstance)) {
+        result = pipeInstance.transform(result, { type: "custom" });
+      }
+    }
+    return result;
+  }
+
+  private getPipeTransformInstance(pipe: Function): object | undefined {
+    const pipeProvider = this.discovery.getProviders().find(p => p.metatype === pipe);
+    if (pipeProvider) {
+      return pipeProvider.instance;
+    }
+  }
+
+  private isPipeTransform(pipe?: object): pipe is PipeTransform {
+    return pipe !== undefined && Reflect.has(pipe, "transform");
   }
 }

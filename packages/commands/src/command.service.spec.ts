@@ -1,3 +1,5 @@
+import { ParseIntPipe, PipeTransform } from "@nestjs/common";
+import { DiscoveryService } from "@nestjs/core";
 import { Commander as CommanderInterface } from "./command.interface";
 import { CommandService } from "./command.service";
 import yargs = require("yargs");
@@ -8,7 +10,7 @@ describe("CommandService", () => {
   });
 
   describe("isNestedCommand", () => {
-    const service = new CommandService({});
+    const service = new CommandService({}, {} as DiscoveryService);
     it("should be defined", () => {
       expect(service["isNestedCommand"]).toBeDefined();
     });
@@ -24,15 +26,15 @@ describe("CommandService", () => {
 
   describe("exec", () => {
     it("should be defined", () => {
-      expect(new CommandService({}).exec).toBeDefined();
+      expect(new CommandService({}, {} as DiscoveryService).exec).toBeDefined();
     });
 
     it("should return void 0 if not have commanders", () => {
-      expect(new CommandService({}).exec()).toBeUndefined();
+      expect(new CommandService({}, {} as DiscoveryService).exec()).toBeUndefined();
     });
 
     it("should return undefined", () => {
-      const service = new CommandService({});
+      const service = new CommandService({}, {} as DiscoveryService);
       service.commanders.push({} as any);
       service["parser"] = jest.fn().mockReturnValue(yargs);
       expect(service.exec()).toBeUndefined();
@@ -46,28 +48,27 @@ describe("CommandService", () => {
           if (err) {
             return rejects(err);
           }
-
           resolve(output);
         });
       });
     }
 
     it("should be defined", () => {
-      expect(new CommandService({})["parser"]).toBeDefined();
+      expect(new CommandService({}, {} as DiscoveryService)["parser"]).toBeDefined();
     });
 
     it("should set scriptName", async () => {
-      const service = new CommandService({ scriptName: "test" });
+      const service = new CommandService({ scriptName: "test" }, {} as DiscoveryService);
       await expect(parse(service, ["--help"])).resolves.toEqual(expect.any(String));
     });
 
     it("should set usage", async () => {
-      const service = new CommandService({ usage: "test" });
+      const service = new CommandService({ usage: "test" }, {} as DiscoveryService);
       await expect(parse(service, ["--help"])).resolves.toEqual(expect.stringMatching(/^test$/gm));
     });
 
     it("should throw error if commander doesn't have command", async () => {
-      const service = new CommandService({});
+      const service = new CommandService({}, {} as DiscoveryService);
       const commander = { commands: [], instance: {} as any, options: [] } as CommanderInterface;
       service.commanders.push(commander);
       await expect(parse(service, [])).rejects.toThrowError();
@@ -75,7 +76,7 @@ describe("CommandService", () => {
 
     it("should set command", async () => {
       const mock = jest.fn();
-      const service = new CommandService({});
+      const service = new CommandService({}, {} as DiscoveryService);
       const commander = {
         commands: [
           {
@@ -97,7 +98,7 @@ describe("CommandService", () => {
 
     it("should set command positionals", async () => {
       const mock = jest.fn();
-      const service = new CommandService({ locale: "en_us" });
+      const service = new CommandService({ locale: "en_us" }, {} as DiscoveryService);
       const commander = {
         commands: [
           {
@@ -110,15 +111,18 @@ describe("CommandService", () => {
               {
                 options: { demandPositional: true, name: "pos1", type: "number" },
                 parameterIndex: 0,
+                pipes: [],
               },
               {
                 options: { default: 123, name: "pos2", type: "number" },
                 parameterIndex: 1,
+                pipes: [],
               },
 
               {
                 options: { name: "files.." },
                 parameterIndex: 2,
+                pipes: [],
               },
             ],
           },
@@ -133,7 +137,7 @@ describe("CommandService", () => {
 
     it("should set command options", async () => {
       const mock = jest.fn();
-      const service = new CommandService({ locale: "en_us" });
+      const service = new CommandService({ locale: "en_us" }, {} as DiscoveryService);
       const commander = {
         commands: [
           {
@@ -145,10 +149,12 @@ describe("CommandService", () => {
               {
                 options: { name: "option1", required: true, type: "number" },
                 parameterIndex: 0,
+                pipes: [],
               },
               {
                 options: { default: 123, name: "option2", type: "number" },
                 parameterIndex: 1,
+                pipes: [],
               },
             ],
             positionals: [],
@@ -164,7 +170,7 @@ describe("CommandService", () => {
 
     it("should set nested command", async () => {
       const mock = jest.fn();
-      const service = new CommandService({});
+      const service = new CommandService({}, {} as DiscoveryService);
       const commander = {
         commands: [
           {
@@ -186,7 +192,7 @@ describe("CommandService", () => {
     });
 
     it("should merge commanders", async () => {
-      const service = new CommandService({ locale: "en_us", scriptName: "test" });
+      const service = new CommandService({ locale: "en_us", scriptName: "test" }, {} as DiscoveryService);
       service.commanders.push({
         commands: [
           {
@@ -224,14 +230,13 @@ describe("CommandService", () => {
        *    --version  Show version number                                       [boolean]
        */
       const output = await parse(service, ["--help"]);
-
       expect(output).toEqual(expect.stringContaining("test test"));
       expect(output).toEqual(expect.stringContaining("test test2"));
     });
 
     it("should set commander option", async () => {
       const commanderMock = {} as any;
-      const service = new CommandService({ locale: "en_us" });
+      const service = new CommandService({ locale: "en_us" }, {} as DiscoveryService);
       const commander = {
         commands: [
           {
@@ -246,6 +251,7 @@ describe("CommandService", () => {
           {
             key: "token",
             options: { demandOption: true, name: "token" },
+            pipes: [],
           },
         ],
       } as CommanderInterface;
@@ -266,6 +272,64 @@ describe("CommandService", () => {
 
       await parse(service, ["test", "--token", "token"]);
       expect(commanderMock).toStrictEqual({ token: "token" });
+    });
+
+    it("should used pipes", async () => {
+      const commanderMock = {} as any;
+
+      class TestPipe1 implements PipeTransform<string, string> {
+        transform(): string {
+          return "TestPipe1";
+        }
+      }
+
+      class TestPipe2 implements PipeTransform<string, string> {
+        transform(): string {
+          return "TestPipe2";
+        }
+      }
+
+      const service = new CommandService({ locale: "en_us" }, {
+        getProviders: jest.fn().mockReturnValue([{ instance: new TestPipe2(), metatype: TestPipe2 }]),
+      } as any);
+
+      const commander = {
+        commands: [
+          {
+            instance: jest.fn(),
+            name: "test",
+            options: [],
+            positionals: [],
+          },
+        ],
+        instance: commanderMock,
+        options: [
+          {
+            key: "token1",
+            options: { demandOption: true, name: "token1" },
+            pipes: [new TestPipe1()],
+          },
+          {
+            key: "token2",
+            options: { demandOption: true, name: "token2" },
+            pipes: [TestPipe2],
+          },
+          {
+            key: "token3",
+            options: { demandOption: true, name: "token3", type: "number" },
+            // ERROR: Promise not supported.
+            pipes: [new ParseIntPipe()],
+          },
+        ],
+      } as CommanderInterface;
+      service.commanders.push(commander);
+      await parse(service, ["test", "--token1", "token", "--token2", "token2", "--token3", "1"]);
+      expect(commanderMock).toStrictEqual({
+        token1: "TestPipe1",
+        token2: "TestPipe2",
+        // ERROR: for now, returns Promise object.
+        token3: expect.any(Promise),
+      });
     });
   });
 });

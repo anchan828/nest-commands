@@ -164,20 +164,44 @@ class TestCommander {
 }
 ```
 
+### Pipe
+
+```typescript
+@Injectable()
+class StringPipe implements PipeTransform<string, string> {
+  transform(value: string): string {
+    return `updated ${value}`;
+  }
+}
+
+@Commander()
+class TestCommander {
+  @Command({ describe: "start the server", name: "serve" })
+  public serve(): void {
+    // token is 'updated token'
+    console.log(`token is '${this.token}'`);
+  }
+
+  @CommanderOption({ demandOption: true, name: "token", type: "string" }, StringPipe)
+  public token!: string;
+}
+```
+
 ## Example
 
 You can try to run command!
 
 ```shell
-npx ts-node ./examples/basic.ts basic --help
-npx ts-node ./examples/nested-commands.ts nested show --help
-npx ts-node ./examples/positional-and-option.ts serve --help
-npx ts-node ./examples/many-modules.ts --help
-npx ts-node ./examples/many-modules.ts user show
-npx ts-node ./examples/array-positional.ts list test1 test2
-npx ts-node ./examples/merge-commanders merge --help
-npx ts-node ./examples/commander-option.ts --token token serve
-npx ts-node ./examples/global-options.ts --json test show
+npx ts-node -T ./examples/basic.ts basic --help
+npx ts-node -T ./examples/nested-commands.ts nested show --help
+npx ts-node -T ./examples/positional-and-option.ts serve --help
+npx ts-node -T ./examples/many-modules.ts --help
+npx ts-node -T ./examples/many-modules.ts user show
+npx ts-node -T ./examples/array-positional.ts list test1 test2
+npx ts-node -T ./examples/merge-commanders merge --help
+npx ts-node -T ./examples/commander-option.ts --token token serve
+npx ts-node -T ./examples/global-options.ts --json test show
+npx ts-node -T ./examples/use-pipes.ts --token token serve
 ```
 
 ## Tips

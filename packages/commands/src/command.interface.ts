@@ -1,5 +1,5 @@
 import { Type } from "@nestjs/common";
-import { ModuleMetadata } from "@nestjs/common/interfaces";
+import { ModuleMetadata, PipeTransform } from "@nestjs/common/interfaces";
 import { Options, PositionalOptions } from "yargs";
 
 export interface CommandModuleOptions {
@@ -99,16 +99,19 @@ export interface Command extends CommandOptions {
 export interface CommandOption {
   parameterIndex: number;
   options: CommandOptionOptions;
+  pipes: PipeTransformArg[];
 }
 
 export interface CommanderOption {
   key: string;
   options: CommanderOptionOptions;
+  pipes: PipeTransformArg[];
 }
 
 export interface CommandPositional {
   parameterIndex: number;
   options: CommandPositionalOptions;
+  pipes: PipeTransformArg[];
 }
 
 export interface Commander extends CommanderOptions {
@@ -118,3 +121,5 @@ export interface Commander extends CommanderOptions {
 
   instance: Function;
 }
+
+export type PipeTransformArg = PipeTransform | Function;

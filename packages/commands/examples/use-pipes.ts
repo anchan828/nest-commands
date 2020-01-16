@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Injectable, Module, PipeTransform } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import {
   Command,
@@ -10,17 +10,36 @@ import {
   CommandService,
 } from "../src";
 
-// ts-node -T ./examples/commander-option.ts --token token serve
+@Injectable()
+class StringPipe implements PipeTransform<string, string> {
+  transform(value: string): string {
+    return `updated ${value}`;
+  }
+}
+
+@Injectable()
+class IntPipe implements PipeTransform<number, number> {
+  transform(value: number): number {
+    return value * 2;
+  }
+}
+
+// ts-node -T ./examples/use-pipes.ts --token token serve
 @Commander()
 class TestCommander {
   // See: https://github.com/yargs/yargs#complex-example
   @Command({ describe: "start the server", name: "serve" })
   public serve(
-    @CommandPositional({
-      default: 5000,
-      describe: "port to bind on",
-      name: "port",
-    })
+    @CommandPositional(
+      {
+        default: 5000,
+        describe: "port to bind on",
+        name: "port",
+      },
+      IntPipe,
+      IntPipe,
+      IntPipe,
+    )
     port: number,
     @CommandOption({
       alias: "v",
@@ -31,19 +50,19 @@ class TestCommander {
     })
     verbose: boolean,
   ): void {
-    console.log("Run basic command");
+    console.log("Run use-pipe command");
     console.log(`port is ${port}`);
     console.log(`verbose is ${verbose}`);
     console.log(`token is ${this.token}`);
   }
 
-  @CommanderOption({ demandOption: true, name: "token", type: "string" })
+  @CommanderOption({ demandOption: true, name: "token", type: "string" }, StringPipe)
   public token!: string;
 }
 
 @Module({
   imports: [CommandModule.register()],
-  providers: [TestCommander],
+  providers: [TestCommander, StringPipe, IntPipe],
 })
 class TestAppModule {}
 

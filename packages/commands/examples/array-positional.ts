@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { Command, Commander, CommandModule, CommandPositional, CommandService } from "../src";
 
-// ts-node ./examples/array-positional.ts list test1 test2
+// ts-node -T ./examples/array-positional.ts list test1 test2
 @Commander()
 class TestCommander {
   @Command({ describe: "array positional", name: "list" })

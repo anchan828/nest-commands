@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { Command, Commander, CommandModule, CommandOption, CommandPositional, CommandService } from "../src";
 
-// ts-node ./examples/positional-and-option.ts serve
+// ts-node -T ./examples/positional-and-option.ts serve
 @Commander()
 class TestCommander {
   // See: https://github.com/yargs/yargs#complex-example

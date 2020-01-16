@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { Command, Commander, CommandModule, CommandService } from "../src";
 
-// ts-node ./examples/basic.ts basic
+// ts-node -T ./examples/basic.ts basic
 @Commander()
 class TestCommander {
   @Command({ name: "basic" })
