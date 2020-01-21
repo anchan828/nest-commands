@@ -14,9 +14,9 @@
     "yargs": "15.1.0"
   },
   "devDependencies": {
-    "@types/figlet": "^1.2.0",
+    "@types/figlet": "1.2.0",
     "@types/yargs": "15.0.0",
-    "figlet": "^1.2.4"
+    "figlet": "1.2.4"
   },
   "directories": {
     "dist": "dist"
