@@ -1,5 +1,6 @@
 import { Inject, Injectable, PipeTransform } from "@nestjs/common";
 import { DiscoveryService } from "@nestjs/core";
+import { cosmiconfigSync } from "cosmiconfig";
 import * as Yargs from "yargs";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
 import { Command, Commander, CommandModuleOptions, CommandPositional, PipeTransformArg } from "./command.interface";
@@ -36,6 +37,8 @@ export class CommandService {
       this.yargs.locale(this.options.locale);
     }
 
+    this.setConfig();
+
     for (const commander of this.commanders) {
       if (this.isNestedCommand(commander)) {
         this.yargs.command(commander.name, commander.describe || "", y => {
@@ -48,6 +51,25 @@ export class CommandService {
     }
 
     return this.yargs.showHelpOnFail(true).demandCommand();
+  }
+
+  private setConfig(): void {
+    let config = {};
+
+    if (this.options.configName) {
+      const explorer = cosmiconfigSync(this.options.configName);
+      const result = explorer.search();
+
+      if (result) {
+        config = result.config;
+      }
+    }
+
+    if (this.options.configProcessor) {
+      config = this.options.configProcessor(config);
+    }
+
+    this.yargs.config(config);
   }
 
   private buildCommander(commander: Commander, argv: Yargs.Argv): void {

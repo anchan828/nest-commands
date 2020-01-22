@@ -331,5 +331,66 @@ describe("CommandService", () => {
         token3: expect.any(Promise),
       });
     });
+
+    it("should set config", async () => {
+      const service = new CommandService({ configName: "nest-commands" }, {} as DiscoveryService);
+      const commanderMock = {} as any;
+      const commander = {
+        commands: [
+          {
+            instance: jest.fn(),
+            name: "test",
+            options: [],
+            positionals: [],
+          },
+        ],
+        instance: commanderMock,
+        options: [
+          {
+            key: "text",
+            options: { demandOption: true, name: "text" },
+            pipes: [],
+          },
+        ],
+      } as CommanderInterface;
+      service.commanders.push(commander);
+      await parse(service, ["test"]);
+      expect(commanderMock).toStrictEqual({ text: "world" });
+    });
+
+    it("should set config processor", async () => {
+      const service = new CommandService(
+        {
+          configName: "nest-commands",
+          configProcessor: (config: any): any => {
+            config.text = "changed";
+            return config;
+          },
+        },
+        {} as DiscoveryService,
+      );
+      const commanderMock = {} as any;
+      const commander = {
+        commands: [
+          {
+            instance: jest.fn(),
+            name: "test",
+            options: [],
+            positionals: [],
+          },
+        ],
+        instance: commanderMock,
+        options: [
+          {
+            key: "text",
+            options: { demandOption: true, name: "text" },
+            pipes: [],
+          },
+        ],
+      } as CommanderInterface;
+      service.commanders.push(commander);
+      await parse(service, ["test"]);
+      expect(commanderMock).toStrictEqual({ text: "changed" });
+    });
   });
 });

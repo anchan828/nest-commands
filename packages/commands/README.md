@@ -187,6 +187,53 @@ class TestCommander {
 }
 ```
 
+### Load config file (cosmiconfig)
+
+You can load config file from user project.
+
+If you want to load config, set configName. Then CLI will search and load them
+
+- A {configName} property in a package.json file.
+- A .{configName}rc file with JSON or YAML syntax.
+- A .{configName}rc.json file.
+- A .{configName}rc.yaml, .{configName}rc.yml, or .{configName}rc.js file.
+- A {configName}.config.js JS file exporting the object.
+
+Please see [cosmiconfig](https://github.com/davidtheclark/cosmiconfig#explorersearch) about more details
+
+```ts
+@Module({
+  imports: [
+    CommandModule.register({
+      configName: "nest-commands",
+    }),
+  ],
+  providers: [TestCommander],
+})
+class TestAppModule {}
+```
+
+### Customize config object
+
+You can customize config after loading it.
+
+```ts
+@Module({
+  imports: [
+    CommandModule.register({
+      configName: "nest-commands",
+      configProcessor: (config: TestConfig): TestConfig => {
+        if (config.date === "today") {
+          config.date = new Date().toDateString();
+        }
+        return config;
+      },
+    }),
+  ],
+  providers: [TestCommander],
+})
+```
+
 ## Example
 
 You can try to run command!
@@ -202,6 +249,8 @@ npx ts-node -T ./examples/merge-commanders merge --help
 npx ts-node -T ./examples/commander-option.ts --token token serve
 npx ts-node -T ./examples/global-options.ts --json test show
 npx ts-node -T ./examples/use-pipes.ts --token token serve
+npx ts-node -T ./examples/config.ts test
+npx ts-node -T ./examples/config.processor.ts test
 ```
 
 ## Tips

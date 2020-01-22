@@ -26,6 +26,21 @@ export interface CommandModuleOptions {
    * @memberof CommandModuleOptions
    */
   locale?: string;
+
+  /**
+   * Name of config file. USe cosmiconfigSync(configName)
+   * See: https://github.com/davidtheclark/cosmiconfig
+   * @type {string}
+   * @memberof CommandModuleOptions
+   */
+  configName?: string;
+
+  /**
+   * Customize config object. for example, if config has `extends` property, you can load more data.
+   *
+   * @memberof CommandModuleOptions
+   */
+  configProcessor?: (config: any) => any;
 }
 
 export interface CommandModuleAsyncOptions extends Pick<ModuleMetadata, "imports"> {
