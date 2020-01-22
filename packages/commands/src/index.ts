@@ -9,7 +9,9 @@ export {
 } from "./command.decorator";
 export {
   CommanderOptions,
+  CommandModuleAsyncOptions,
   CommandModuleOptions,
+  CommandModuleOptionsFactory,
   CommandPositionalOptions,
   GlobalConfigOptions,
 } from "./command.interface";
