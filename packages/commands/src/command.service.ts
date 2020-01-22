@@ -98,7 +98,7 @@ export class CommandService {
     }
 
     if (config.processor) {
-      configObject = await config.processor(config);
+      configObject = await config.processor(configObject);
     }
 
     this.yargs.config(configObject);
