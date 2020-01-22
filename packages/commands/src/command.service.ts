@@ -114,7 +114,7 @@ export class CommandService {
       argv.middleware(args => {
         for (const key of Object.keys(args).filter(key => !["_", "$0"].includes(key))) {
           if ([option.options.name, paramCase(option.options.name), option.options.alias].includes(key)) {
-            Reflect.set(commander.instance, option.key, this.transformValue(args[key], option.pipes));
+            Reflect.set(option.instance, option.key, this.transformValue(args[key], option.pipes));
           }
         }
       });

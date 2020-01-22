@@ -247,13 +247,7 @@ describe("CommandService", () => {
           },
         ],
         instance: commanderMock,
-        options: [
-          {
-            key: "token",
-            options: { demandOption: true, name: "token" },
-            pipes: [],
-          },
-        ],
+        options: [{ instance: commanderMock, key: "token", options: { demandOption: true, name: "token" }, pipes: [] }],
       } as CommanderInterface;
       service.commanders.push(commander);
       /**
@@ -305,16 +299,19 @@ describe("CommandService", () => {
         instance: commanderMock,
         options: [
           {
+            instance: commanderMock,
             key: "token1",
             options: { demandOption: true, name: "token1" },
             pipes: [new TestPipe1()],
           },
           {
+            instance: commanderMock,
             key: "token2",
             options: { demandOption: true, name: "token2" },
             pipes: [TestPipe2],
           },
           {
+            instance: commanderMock,
             key: "token3",
             options: { demandOption: true, name: "token3", type: "number" },
             // ERROR: Promise not supported.
@@ -346,12 +343,9 @@ describe("CommandService", () => {
         ],
         instance: commanderMock,
         options: [
+          { instance: commanderMock, key: "text", options: { demandOption: true, name: "text" }, pipes: [] },
           {
-            key: "text",
-            options: { demandOption: true, name: "text" },
-            pipes: [],
-          },
-          {
+            instance: commanderMock,
             key: "test",
             options: { demandOption: true, name: "test-test" },
             pipes: [],
@@ -377,13 +371,7 @@ describe("CommandService", () => {
           },
         ],
         instance: commanderMock,
-        options: [
-          {
-            key: "text",
-            options: { demandOption: true, name: "text" },
-            pipes: [],
-          },
-        ],
+        options: [{ instance: commanderMock, key: "text", options: { demandOption: true, name: "text" }, pipes: [] }],
       } as CommanderInterface;
       service.config = {
         name: "nest-commands",

@@ -147,6 +147,7 @@ export class ExplorerService {
       const commanderName = commander.name ?? "";
       if (mergedCommanders.has(commanderName)) {
         mergedCommanders.get(commanderName)?.commands.push(...commander.commands);
+        mergedCommanders.get(commanderName)?.options.push(...commander.options);
       } else {
         mergedCommanders.set(commanderName, commander);
       }

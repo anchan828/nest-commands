@@ -38,7 +38,7 @@ export function Command(options: CommandOptions): MethodDecorator {
 
 export function CommanderOption(options: CommandOptionOptions, ...pipes: PipeTransformArg[]): PropertyDecorator {
   return (target: Record<string, any>, key: string | symbol): void => {
-    const commanderOption = { key, options, pipes } as CommanderOption;
+    const commanderOption = { instance: target, key, options, pipes } as CommanderOption;
 
     let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_OPTION_DECORATOR, target) as
       | CommanderOption[]

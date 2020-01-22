@@ -134,6 +134,7 @@ export interface CommandOption {
 }
 
 export interface CommanderOption {
+  instance: Function;
   key: string;
   options: CommanderOptionOptions;
   pipes: PipeTransformArg[];

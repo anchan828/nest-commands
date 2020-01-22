@@ -318,9 +318,9 @@ describe("ExplorerService", () => {
           });
         });
 
-        it("1 commander with 2 commander options", async () => {
+        it("2 commander with 3 commander options", async () => {
           @Commander()
-          class TestCommander {
+          class TestCommander1 {
             @Command({ name: "basic" })
             public basic(): void {
               console.log("hello!");
@@ -332,12 +332,20 @@ describe("ExplorerService", () => {
             @CommanderOption({ demandOption: true, name: "token2" })
             public token2!: string;
           }
+
+          @Commander()
+          class TestCommander2 {
+            @CommanderOption({ demandOption: true, name: "token3" })
+            public token3!: string;
+          }
           const app = await Test.createTestingModule({
             imports: [DiscoveryModule],
-            providers: [ExplorerService, TestCommander],
+            providers: [ExplorerService, TestCommander1, TestCommander2],
           }).compile();
 
           const service = app.get<ExplorerService>(ExplorerService);
+          const instance1 = app.get<TestCommander1>(TestCommander1);
+          const instance2 = app.get<TestCommander2>(TestCommander2);
           expect(service.explore()).toEqual({
             commanders: [
               {
@@ -349,9 +357,10 @@ describe("ExplorerService", () => {
                     positionals: [],
                   },
                 ],
-                instance: app.get<TestCommander>(TestCommander),
+                instance: instance1,
                 options: [
                   {
+                    instance: instance1,
                     key: "token1",
                     options: {
                       demandOption: true,
@@ -360,6 +369,7 @@ describe("ExplorerService", () => {
                     pipes: [],
                   },
                   {
+                    instance: instance1,
                     key: "token2",
                     options: {
                       demandOption: true,
@@ -367,9 +377,19 @@ describe("ExplorerService", () => {
                     },
                     pipes: [],
                   },
+                  {
+                    instance: instance2,
+                    key: "token3",
+                    options: {
+                      demandOption: true,
+                      name: "token3",
+                    },
+                    pipes: [],
+                  },
                 ],
               },
             ],
+            config: undefined,
           });
         });
 
