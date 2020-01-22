@@ -201,11 +201,14 @@ If you want to load config, set configName. Then CLI will search and load them
 
 Please see [cosmiconfig](https://github.com/davidtheclark/cosmiconfig#explorersearch) about more details
 
+Also, You can add custom config filename
+
 ```ts
 @Module({
   imports: [
     CommandModule.register({
       configName: "nest-commands",
+      searchPlaces: ["custom-config-name.json"],
     }),
   ],
   providers: [TestCommander],
@@ -221,17 +224,20 @@ You can customize config after loading it.
 @Module({
   imports: [
     CommandModule.register({
-      configName: "nest-commands",
-      configProcessor: (config: TestConfig): TestConfig => {
-        if (config.date === "today") {
-          config.date = new Date().toDateString();
-        }
-        return config;
+      config: {
+        name: "nest-commands",
+        processor: (config: TestConfig): TestConfig => {
+          if (config.date === "today") {
+            config.date = new Date().toDateString();
+          }
+          return config;
+        },
       },
     }),
   ],
   providers: [TestCommander],
 })
+class TestAppModule {}
 ```
 
 ## Example

@@ -13,7 +13,11 @@ class TestCommander {
 @Module({
   imports: [
     CommandModule.register({
-      configName: "nest-commands",
+      config: {
+        name: "nest-commands",
+        // You can add custom config name without dot
+        searchPlaces: ["nest-commands.json"],
+      },
     }),
   ],
   providers: [TestCommander],

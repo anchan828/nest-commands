@@ -16,12 +16,14 @@ interface TestConfig {
 @Module({
   imports: [
     CommandModule.register({
-      configName: "nest-commands",
-      configProcessor: (config: TestConfig): TestConfig => {
-        if (typeof config.date === "string" && config.date === "today") {
-          config.date = new Date().toDateString();
-        }
-        return config;
+      config: {
+        name: "nest-commands",
+        processor: (config: TestConfig): TestConfig => {
+          if (config.date === "today") {
+            config.date = new Date().toDateString();
+          }
+          return config;
+        },
       },
     }),
   ],

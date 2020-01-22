@@ -3,7 +3,14 @@ import { DiscoveryService } from "@nestjs/core";
 import { cosmiconfigSync } from "cosmiconfig";
 import * as Yargs from "yargs";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
-import { Command, Commander, CommandModuleOptions, CommandPositional, PipeTransformArg } from "./command.interface";
+import {
+  Command,
+  CommandConfigOptions,
+  Commander,
+  CommandModuleOptions,
+  CommandPositional,
+  PipeTransformArg,
+} from "./command.interface";
 @Injectable()
 export class CommandService {
   public commanders: Commander[] = [];
@@ -37,7 +44,9 @@ export class CommandService {
       this.yargs.locale(this.options.locale);
     }
 
-    this.setConfig();
+    if (this.options.config) {
+      this.setConfig(this.options.config);
+    }
 
     for (const commander of this.commanders) {
       if (this.isNestedCommand(commander)) {
@@ -53,11 +62,27 @@ export class CommandService {
     return this.yargs.showHelpOnFail(true).demandCommand();
   }
 
-  private setConfig(): void {
+  private setConfig(configOptions: CommandConfigOptions): void {
     let config = {};
 
-    if (this.options.configName) {
-      const explorer = cosmiconfigSync(this.options.configName);
+    const searchPlaces = [
+      "package.json",
+      `.${configOptions.name}rc`,
+      `.${configOptions.name}rc.json`,
+      `.${configOptions.name}rc.yaml`,
+      `.${configOptions.name}rc.yml`,
+      `.${configOptions.name}rc.js`,
+      `${configOptions.name}.config.js`,
+    ];
+
+    if (Array.isArray(configOptions.searchPlaces)) {
+      searchPlaces.push(...configOptions.searchPlaces);
+    }
+
+    if (configOptions.name) {
+      const explorer = cosmiconfigSync(configOptions.name, {
+        searchPlaces,
+      });
       const result = explorer.search();
 
       if (result) {
@@ -65,8 +90,8 @@ export class CommandService {
       }
     }
 
-    if (this.options.configProcessor) {
-      config = this.options.configProcessor(config);
+    if (configOptions.processor) {
+      config = configOptions.processor(config);
     }
 
     this.yargs.config(config);

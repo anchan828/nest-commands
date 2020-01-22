@@ -333,7 +333,10 @@ describe("CommandService", () => {
     });
 
     it("should set config", async () => {
-      const service = new CommandService({ configName: "nest-commands" }, {} as DiscoveryService);
+      const service = new CommandService(
+        { config: { name: "nest-commands", searchPlaces: ["nest-commands.json"] } },
+        {} as DiscoveryService,
+      );
       const commanderMock = {} as any;
       const commander = {
         commands: [
@@ -361,10 +364,12 @@ describe("CommandService", () => {
     it("should set config processor", async () => {
       const service = new CommandService(
         {
-          configName: "nest-commands",
-          configProcessor: (config: any): any => {
-            config.text = "changed";
-            return config;
+          config: {
+            name: "nest-commands",
+            processor: (config: any): any => {
+              config.text = "changed";
+              return config;
+            },
           },
         },
         {} as DiscoveryService,
