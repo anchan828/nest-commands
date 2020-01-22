@@ -354,11 +354,16 @@ describe("CommandService", () => {
             options: { demandOption: true, name: "text" },
             pipes: [],
           },
+          {
+            key: "test",
+            options: { demandOption: true, name: "test-test" },
+            pipes: [],
+          },
         ],
       } as CommanderInterface;
       service.commanders.push(commander);
       await parse(service, ["test"]);
-      expect(commanderMock).toStrictEqual({ text: "world" });
+      expect(commanderMock).toStrictEqual({ test: "test", text: "world" });
     });
 
     it("should set config processor", async () => {

@@ -1,6 +1,7 @@
 import { Inject, Injectable, PipeTransform } from "@nestjs/common";
 import { DiscoveryService } from "@nestjs/core";
 import { cosmiconfigSync } from "cosmiconfig";
+import { paramCase } from "param-case";
 import * as Yargs from "yargs";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
 import {
@@ -106,7 +107,7 @@ export class CommandService {
       argv.option(option.options.name, option.options);
       argv.middleware(args => {
         for (const key of Object.keys(args).filter(key => !["_", "$0"].includes(key))) {
-          if (option.options.name === key) {
+          if ([option.options.name, paramCase(option.options.name), option.options.alias].includes(key)) {
             Reflect.set(commander.instance, option.key, this.transformValue(args[key], option.pipes));
           }
         }
@@ -148,12 +149,12 @@ export class CommandService {
         const params = Array(command.positionals.length + command.options.length);
         for (const key of Object.keys(args).filter(key => !["_", "$0"].includes(key))) {
           for (const positional of command.positionals) {
-            if (positional.options.name === key || positional.options.alias === key) {
+            if ([positional.options.name, paramCase(positional.options.name), positional.options.alias].includes(key)) {
               params[positional.parameterIndex] = this.transformValue(args[key], positional.pipes);
             }
           }
           for (const option of command.options) {
-            if (option.options.name === key || option.options.alias === key) {
+            if ([option.options.name, paramCase(option.options.name), option.options.alias].includes(key)) {
               params[option.parameterIndex] = this.transformValue(args[key], option.pipes);
             }
           }

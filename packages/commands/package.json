@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "cosmiconfig": "6.0.0",
+    "param-case": "3.0.3",
     "yargs": "15.1.0"
   },
   "devDependencies": {
