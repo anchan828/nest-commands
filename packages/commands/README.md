@@ -226,7 +226,7 @@ You can customize config after loading it.
     CommandModule.register({
       config: {
         name: "nest-commands",
-        processor: (config: TestConfig): TestConfig => {
+        processor: async (config: TestConfig): Promise<TestConfig> => {
           if (config.date === "today") {
             config.date = new Date().toDateString();
           }
@@ -236,6 +236,27 @@ You can customize config after loading it.
     }),
   ],
   providers: [TestCommander],
+})
+class TestAppModule {}
+```
+
+Also, you can use decorators!
+
+```ts
+@GlobalConfig({ name: "nest-commands", searchPlaces: ["custom-config-name.json"] })
+class TestGlobalConfig {
+  @GlobalConfigProcessor()
+  public async processor(config: TestConfig): Promise<TestConfig> {
+    if (config.date === "today") {
+      config.date = new Date().toDateString();
+    }
+    return config;
+  }
+}
+
+@Module({
+  imports: [CommandModule.register()],
+  providers: [TestCommander, TestGlobalConfig],
 })
 class TestAppModule {}
 ```

@@ -14,7 +14,9 @@ export class CommandCoreModule implements OnModuleInit {
   constructor(private readonly explorer: ExplorerService, private readonly service: CommandService) {}
 
   public onModuleInit(): void {
-    this.service.commanders = this.explorer.explore();
+    const { config, commanders } = this.explorer.explore();
+    this.service.config = config;
+    this.service.commanders = commanders;
   }
 
   public static register(options: CommandModuleOptions): DynamicModule {

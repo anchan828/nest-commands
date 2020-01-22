@@ -4,16 +4,28 @@ import { MetadataScanner } from "@nestjs/core/metadata-scanner";
 import {
   COMMAND_MODULE_COMMANDER_DECORATOR,
   COMMAND_MODULE_COMMANDER_OPTION_DECORATOR,
+  COMMAND_MODULE_COMMAND_CONFIG_DECORATOR,
+  COMMAND_MODULE_COMMAND_CONFIG_PROCESSOR,
   COMMAND_MODULE_COMMAND_DECORATOR,
   COMMAND_MODULE_COMMAND_OPTION_DECORATOR,
   COMMAND_MODULE_COMMAND_POSITIONAL_DECORATOR,
 } from "./command.constants";
-import { Command, Commander, CommanderOption, CommandOption, CommandPositional } from "./command.interface";
+import {
+  Command,
+  Commander,
+  CommanderOption,
+  CommandOption,
+  CommandPositional,
+  GlobalConfigOptions,
+} from "./command.interface";
 @Injectable()
 export class ExplorerService {
   constructor(private readonly discoveryService: DiscoveryService, private readonly metadataScanner: MetadataScanner) {}
 
-  public explore(): Commander[] {
+  public explore(): {
+    config?: GlobalConfigOptions;
+    commanders: Commander[];
+  } {
     const commanders = this.getCommanders();
 
     for (const commander of commanders) {
@@ -28,7 +40,34 @@ export class ExplorerService {
 
       commander.commands = commands;
     }
-    return this.mergeCommanders(commanders);
+    return {
+      commanders: this.mergeCommanders(commanders),
+      config: this.getGlobalConfigOptions(),
+    };
+  }
+
+  private getGlobalConfigOptions(): GlobalConfigOptions | undefined {
+    const classInstanceWrappers = this.discoveryService
+      .getProviders()
+      .filter(instanceWrapper => instanceWrapper.metatype);
+
+    for (const classInstanceWrapper of classInstanceWrappers) {
+      const metadata = Reflect.getMetadata(COMMAND_MODULE_COMMAND_CONFIG_DECORATOR, classInstanceWrapper.metatype);
+
+      if (metadata) {
+        const instance = classInstanceWrapper.instance;
+        const prototype = Object.getPrototypeOf(instance);
+        let processor: Function | undefined;
+        for (const methodName of this.metadataScanner.getAllFilteredMethodNames(prototype)) {
+          const value = Reflect.getMetadata(COMMAND_MODULE_COMMAND_CONFIG_PROCESSOR, prototype[methodName]);
+          if (value) {
+            processor = prototype[methodName].bind(instance);
+          }
+        }
+
+        return { processor, ...metadata } as GlobalConfigOptions;
+      }
+    }
   }
 
   private getCommanders(): Commander[] {

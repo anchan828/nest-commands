@@ -6,14 +6,16 @@ import * as Yargs from "yargs";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
 import {
   Command,
-  CommandConfigOptions,
   Commander,
   CommandModuleOptions,
   CommandPositional,
+  GlobalConfigOptions,
   PipeTransformArg,
 } from "./command.interface";
 @Injectable()
 export class CommandService {
+  public config?: GlobalConfigOptions;
+
   public commanders: Commander[] = [];
 
   private readonly yargs: Yargs.Argv;
@@ -25,14 +27,17 @@ export class CommandService {
     this.yargs = Yargs(process.argv.slice(2));
   }
 
-  public exec(): void {
+  public async exec(): Promise<void> {
     if (this.commanders.length === 0) {
       return;
     }
-    this.parser().argv;
+
+    const parsed = await this.parser();
+
+    parsed.argv;
   }
 
-  private parser(): Yargs.Argv {
+  private async parser(): Promise<Yargs.Argv> {
     if (this.options.scriptName) {
       this.yargs.scriptName(this.options.scriptName);
     }
@@ -45,9 +50,7 @@ export class CommandService {
       this.yargs.locale(this.options.locale);
     }
 
-    if (this.options.config) {
-      this.setConfig(this.options.config);
-    }
+    await this.setGlobalConfig(this.config || this.options.config);
 
     for (const commander of this.commanders) {
       if (this.isNestedCommand(commander)) {
@@ -63,39 +66,42 @@ export class CommandService {
     return this.yargs.showHelpOnFail(true).demandCommand();
   }
 
-  private setConfig(configOptions: CommandConfigOptions): void {
-    let config = {};
+  private async setGlobalConfig(config?: GlobalConfigOptions): Promise<void> {
+    if (!config) {
+      return;
+    }
 
     const searchPlaces = [
       "package.json",
-      `.${configOptions.name}rc`,
-      `.${configOptions.name}rc.json`,
-      `.${configOptions.name}rc.yaml`,
-      `.${configOptions.name}rc.yml`,
-      `.${configOptions.name}rc.js`,
-      `${configOptions.name}.config.js`,
+      `.${config.name}rc`,
+      `.${config.name}rc.json`,
+      `.${config.name}rc.yaml`,
+      `.${config.name}rc.yml`,
+      `.${config.name}rc.js`,
+      `${config.name}.config.js`,
     ];
 
-    if (Array.isArray(configOptions.searchPlaces)) {
-      searchPlaces.push(...configOptions.searchPlaces);
+    if (Array.isArray(config.searchPlaces)) {
+      searchPlaces.push(...config.searchPlaces);
     }
 
-    if (configOptions.name) {
-      const explorer = cosmiconfigSync(configOptions.name, {
-        searchPlaces,
-      });
-      const result = explorer.search();
+    const explorer = cosmiconfigSync(config.name, {
+      searchPlaces,
+    });
 
-      if (result) {
-        config = result.config;
-      }
+    const result = explorer.search();
+
+    let configObject = {};
+
+    if (result) {
+      configObject = result.config;
     }
 
-    if (configOptions.processor) {
-      config = configOptions.processor(config);
+    if (config.processor) {
+      configObject = await config.processor(config);
     }
 
-    this.yargs.config(config);
+    this.yargs.config(configObject);
   }
 
   private buildCommander(commander: Commander, argv: Yargs.Argv): void {

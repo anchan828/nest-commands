@@ -30,21 +30,21 @@ describe("CommandService", () => {
     });
 
     it("should return void 0 if not have commanders", () => {
-      expect(new CommandService({}, {} as DiscoveryService).exec()).toBeUndefined();
+      expect(new CommandService({}, {} as DiscoveryService).exec()).resolves.toBeUndefined();
     });
 
     it("should return undefined", () => {
       const service = new CommandService({}, {} as DiscoveryService);
       service.commanders.push({} as any);
-      service["parser"] = jest.fn().mockReturnValue(yargs);
-      expect(service.exec()).toBeUndefined();
+      service["parser"] = jest.fn().mockResolvedValue(yargs);
+      expect(service.exec()).resolves.toBeUndefined();
     });
   });
 
   describe("parser", () => {
     async function parse(service: CommandService, args: string[]): Promise<string> {
-      return new Promise<string>((resolve, rejects) => {
-        service["parser"]().parse(args, (err: any, argv: any, output: any) => {
+      return new Promise<string>(async (resolve, rejects) => {
+        (await service["parser"]()).parse(args, (err: any, argv: any, output: any) => {
           if (err) {
             return rejects(err);
           }
@@ -333,10 +333,7 @@ describe("CommandService", () => {
     });
 
     it("should set config", async () => {
-      const service = new CommandService(
-        { config: { name: "nest-commands", searchPlaces: ["nest-commands.json"] } },
-        {} as DiscoveryService,
-      );
+      const service = new CommandService({}, {} as DiscoveryService);
       const commanderMock = {} as any;
       const commander = {
         commands: [
@@ -361,24 +358,14 @@ describe("CommandService", () => {
           },
         ],
       } as CommanderInterface;
+      service.config = { name: "nest-commands", searchPlaces: ["nest-commands.json"] };
       service.commanders.push(commander);
       await parse(service, ["test"]);
       expect(commanderMock).toStrictEqual({ test: "test", text: "world" });
     });
 
     it("should set config processor", async () => {
-      const service = new CommandService(
-        {
-          config: {
-            name: "nest-commands",
-            processor: (config: any): any => {
-              config.text = "changed";
-              return config;
-            },
-          },
-        },
-        {} as DiscoveryService,
-      );
+      const service = new CommandService({}, {} as DiscoveryService);
       const commanderMock = {} as any;
       const commander = {
         commands: [
@@ -398,6 +385,13 @@ describe("CommandService", () => {
           },
         ],
       } as CommanderInterface;
+      service.config = {
+        name: "nest-commands",
+        processor: (config: any): any => {
+          config.text = "changed";
+          return config;
+        },
+      };
       service.commanders.push(commander);
       await parse(service, ["test"]);
       expect(commanderMock).toStrictEqual({ text: "changed" });

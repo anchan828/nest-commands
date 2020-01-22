@@ -2,6 +2,8 @@ import { SetMetadata } from "@nestjs/common";
 import {
   COMMAND_MODULE_COMMANDER_DECORATOR,
   COMMAND_MODULE_COMMANDER_OPTION_DECORATOR,
+  COMMAND_MODULE_COMMAND_CONFIG_DECORATOR,
+  COMMAND_MODULE_COMMAND_CONFIG_PROCESSOR,
   COMMAND_MODULE_COMMAND_DECORATOR,
   COMMAND_MODULE_COMMAND_OPTION_DECORATOR,
   COMMAND_MODULE_COMMAND_POSITIONAL_DECORATOR,
@@ -14,8 +16,17 @@ import {
   CommandOptions,
   CommandPositional,
   CommandPositionalOptions,
+  GlobalConfigOptions,
   PipeTransformArg,
 } from "./command.interface";
+
+export function GlobalConfig(options: GlobalConfigOptions): ClassDecorator {
+  return SetMetadata(COMMAND_MODULE_COMMAND_CONFIG_DECORATOR, options);
+}
+
+export function GlobalConfigProcessor(): MethodDecorator {
+  return SetMetadata(COMMAND_MODULE_COMMAND_CONFIG_PROCESSOR, "set");
+}
 
 export function Commander(options?: CommanderOptions): ClassDecorator {
   return SetMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, options || {});

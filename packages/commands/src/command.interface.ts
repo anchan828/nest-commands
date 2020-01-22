@@ -2,18 +2,18 @@ import { Type } from "@nestjs/common";
 import { ModuleMetadata, PipeTransform } from "@nestjs/common/interfaces";
 import { Options, PositionalOptions } from "yargs";
 
-export interface CommandConfigOptions {
+export interface GlobalConfigOptions {
   /**
    * Name of config file. This name is used by cosmiconfigSync(configName)
    * See: https://github.com/davidtheclark/cosmiconfig
    * @type {string}
-   * @memberof CommandConfigOptions
+   * @memberof GlobalConfigOptions
    */
   name: string;
 
   /**
    * Customize config object. for example, if config has `extends` property, you can load more data.
-   * @memberof CommandConfigOptions
+   * @memberof GlobalConfigOptions
    */
   processor?: (config: any) => any;
 
@@ -21,7 +21,7 @@ export interface CommandConfigOptions {
    * An array of places that search() will check in each directory as it moves up the directory tree. Each place is relative to the directory being searched, and the places are checked in the specified order.
    * This values append to default searchPlaces. See https://github.com/davidtheclark/cosmiconfig#searchplaces
    * @type {string[]}
-   * @memberof CommandConfigOptions
+   * @memberof GlobalConfigOptions
    */
   searchPlaces?: string[];
 }
@@ -56,7 +56,7 @@ export interface CommandModuleOptions {
    *
    * @memberof CommandModuleOptions
    */
-  config?: CommandConfigOptions;
+  config?: GlobalConfigOptions;
 }
 
 export interface CommandModuleAsyncOptions extends Pick<ModuleMetadata, "imports"> {
