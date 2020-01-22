@@ -111,6 +111,10 @@ export class ExplorerService {
       options = [];
     }
 
+    for (const option of options) {
+      option.instance = instance;
+    }
+
     return options;
   }
 
