@@ -112,11 +112,16 @@ export class CommandService {
     for (const option of commander.options) {
       argv.option(option.options.name, option.options);
       argv.middleware(args => {
-        const arg = this.getArg(args, [
+        let arg = this.getArg(args, [
           option.options.name,
           paramCase(option.options.name),
           ...(option.options.alias || []),
         ]);
+
+        if (!arg) {
+          arg = Reflect.get(option.instance, option.key);
+        }
+
         Reflect.set(option.instance, option.key, this.transformValue(arg, option.pipes));
       });
     }
