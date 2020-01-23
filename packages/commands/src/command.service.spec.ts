@@ -307,7 +307,7 @@ describe("CommandService", () => {
           {
             instance: commanderMock,
             key: "token2",
-            options: { demandOption: true, name: "token2" },
+            options: { name: "token2" },
             pipes: [TestPipe2],
           },
           {
@@ -320,7 +320,7 @@ describe("CommandService", () => {
         ],
       } as CommanderInterface;
       service.commanders.push(commander);
-      await parse(service, ["test", "--token1", "token", "--token2", "token2", "--token3", "1"]);
+      await parse(service, ["test", "--token1", "token", "--token3", "1"]);
       expect(commanderMock).toStrictEqual({
         token1: "TestPipe1",
         token2: "TestPipe2",
