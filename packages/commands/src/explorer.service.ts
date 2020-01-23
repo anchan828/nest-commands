@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DiscoveryService } from "@nestjs/core";
 import { MetadataScanner } from "@nestjs/core/metadata-scanner";
+import { isArray } from "util";
 import {
   COMMAND_MODULE_COMMANDER_DECORATOR,
   COMMAND_MODULE_COMMANDER_OPTION_DECORATOR,
@@ -80,8 +81,8 @@ export class ExplorerService {
     for (const classInstanceWrapper of classInstanceWrappers) {
       const metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, classInstanceWrapper.metatype);
 
-      if (metadata) {
-        commanders.push({ instance: classInstanceWrapper.instance, ...metadata });
+      if (metadata && isArray(metadata)) {
+        commanders.push(...metadata.map(m => ({ instance: classInstanceWrapper.instance, ...m })));
       }
     }
 
@@ -149,16 +150,18 @@ export class ExplorerService {
     const mergedCommanders: Map<string, Commander> = new Map<string, Commander>();
     for (const commander of commanders) {
       const commanderName = commander.name ?? "";
-      if (mergedCommanders.has(commanderName)) {
-        mergedCommanders.get(commanderName)?.commands.push(...commander.commands);
-        mergedCommanders.get(commanderName)?.options.push(...commander.options);
+      let mergedCommander = mergedCommanders.get(commanderName);
+      if (mergedCommander) {
+        mergedCommander.commands.push(...commander.commands);
+        mergedCommander.options.push(...commander.options);
       } else {
-        mergedCommanders.set(commanderName, commander);
+        mergedCommander = commander;
       }
+      mergedCommanders.set(commanderName, mergedCommander);
     }
 
     return Array.from(mergedCommanders.values()).filter(
-      commander => commander.commands.length !== 0 || commander.options.length !== 0,
+      commander => commander.options.length !== 0 || commander.commands.length !== 0,
     );
   }
 }

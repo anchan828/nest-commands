@@ -492,6 +492,92 @@ describe("ExplorerService", () => {
             ],
           });
         });
+
+        it("should collect base options", async () => {
+          @Commander({ name: "test1" })
+          @Commander({ name: "test2" })
+          class BaseOption {
+            @CommanderOption({ demandOption: true, name: "token", type: "string" })
+            public token!: string;
+          }
+
+          @Commander({ name: "test1" })
+          class Test1Commander {
+            @Command({ name: "serve" })
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            public serve(): void {}
+          }
+
+          @Commander({ name: "test2" })
+          class Test2Commander {
+            @Command({ name: "serve" })
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            public serve(): void {}
+          }
+
+          const app = await Test.createTestingModule({
+            imports: [DiscoveryModule],
+            providers: [ExplorerService, Test1Commander, Test2Commander, BaseOption],
+          }).compile();
+
+          const service = app.get<ExplorerService>(ExplorerService);
+          const baseOption = app.get<BaseOption>(BaseOption);
+          const test1Commander = app.get<Test1Commander>(Test1Commander);
+          const test2Commander = app.get<Test2Commander>(Test2Commander);
+          expect(service.explore()).toEqual({
+            commanders: [
+              {
+                commands: [
+                  {
+                    instance: expect.any(Function),
+                    name: "serve",
+                    options: [],
+                    positionals: [],
+                  },
+                ],
+                instance: test1Commander,
+                name: "test1",
+                options: [
+                  {
+                    instance: baseOption,
+                    key: "token",
+                    options: {
+                      demandOption: true,
+                      name: "token",
+                      type: "string",
+                    },
+                    pipes: [],
+                  },
+                ],
+              },
+              {
+                commands: [
+                  {
+                    instance: expect.any(Function),
+                    name: "serve",
+                    options: [],
+                    positionals: [],
+                  },
+                ],
+                instance: test2Commander,
+                name: "test2",
+                options: [
+                  {
+                    instance: baseOption,
+                    key: "token",
+                    options: {
+                      demandOption: true,
+                      name: "token",
+                      type: "string",
+                    },
+                    pipes: [],
+                  },
+                ],
+              },
+            ],
+            config: undefined,
+          });
+        });
       });
     });
   });

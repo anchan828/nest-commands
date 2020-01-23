@@ -29,7 +29,17 @@ export function GlobalConfigProcessor(): MethodDecorator {
 }
 
 export function Commander(options?: CommanderOptions): ClassDecorator {
-  return SetMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, options || {});
+  return (target: Record<string, any>): void => {
+    const commanderOption = options || { name: undefined };
+
+    let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, target) as CommanderOptions[] | undefined;
+
+    if (!Array.isArray(metadata)) {
+      metadata = [];
+    }
+    metadata.push(commanderOption);
+    Reflect.defineMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, metadata, target);
+  };
 }
 
 export function Command(options: CommandOptions): MethodDecorator {
