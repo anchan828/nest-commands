@@ -157,6 +157,9 @@ export class ExplorerService {
       } else {
         mergedCommander = commander;
       }
+
+      mergedCommander.describe = mergedCommander.describe || commander.describe;
+
       mergedCommanders.set(commanderName, mergedCommander);
     }
 
