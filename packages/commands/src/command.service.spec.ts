@@ -80,7 +80,14 @@ describe("CommandService", () => {
       );
       await expect(parse(service, ["--help"])).resolves.toEqual(expect.stringMatching(/^test$/gm));
     });
-
+    it("should set version", async () => {
+      const service = new CommandService(
+        { version: "1.0.0" },
+        {} as DiscoveryService,
+        { localizeDescriptions: () => ({}) } as any,
+      );
+      await expect(parse(service, ["--version"])).resolves.toEqual("1.0.0");
+    });
     it("should throw error if commander doesn't have command", async () => {
       const service = new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any);
       const commander = { commands: [], instance: {} as any, options: [] } as CommanderInterface;

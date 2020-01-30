@@ -43,6 +43,10 @@ export class CommandService {
   }
 
   private async parser(): Promise<Yargs.Argv> {
+    if (this.options.locale) {
+      this.yargs.locale(this.options.locale);
+    }
+
     if (this.options.scriptName) {
       this.yargs.scriptName(this.options.scriptName);
     }
@@ -51,8 +55,8 @@ export class CommandService {
       this.yargs.usage(this.options.usage);
     }
 
-    if (this.options.locale) {
-      this.yargs.locale(this.options.locale);
+    if (this.options.version) {
+      this.yargs.version(this.options.version);
     }
 
     await this.setGlobalConfig(this.config || this.options.config);

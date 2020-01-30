@@ -41,6 +41,20 @@ export interface Y18nOptions {
 }
 export interface CommandModuleOptions {
   /**
+   * Config file options
+   *
+   * @memberof CommandModuleOptions
+   */
+  config?: GlobalConfigOptions;
+
+  /**
+   * Set to yargs.locale
+   *
+   * @type {string}
+   * @memberof CommandModuleOptions
+   */
+  locale?: string;
+  /**
    * Set to yargs.scriptName
    *
    * @type {string}
@@ -57,21 +71,20 @@ export interface CommandModuleOptions {
   usage?: string;
 
   /**
-   * Set to yargs.locale
+   * y18n options
+   * see https://github.com/yargs/y18n#requirey18nconfig
+   * @type {Y18nOptions}
+   * @memberof CommandModuleOptions
+   */
+  y18n?: Y18nOptions;
+
+  /**
+   * Set to yargs.version
    *
    * @type {string}
    * @memberof CommandModuleOptions
    */
-  locale?: string;
-
-  /**
-   * Config file options
-   *
-   * @memberof CommandModuleOptions
-   */
-  config?: GlobalConfigOptions;
-
-  y18n?: Y18nOptions;
+  version?: string;
 }
 
 export interface CommandModuleAsyncOptions extends Pick<ModuleMetadata, "imports"> {
