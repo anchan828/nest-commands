@@ -2,7 +2,8 @@ import { Inject, Injectable, PipeTransform } from "@nestjs/common";
 import { DiscoveryService } from "@nestjs/core";
 import { cosmiconfigSync } from "cosmiconfig";
 import { paramCase } from "param-case";
-import * as Yargs from "yargs";
+import Y18N from "y18n";
+import Yargs from "yargs";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
 import {
   Command,
@@ -20,11 +21,14 @@ export class CommandService {
 
   private readonly yargs: Yargs.Argv;
 
+  private y18n: Y18N;
+
   constructor(
     @Inject(COMMAND_MODULE_OPTIONS) private readonly options: CommandModuleOptions,
     private readonly discovery: DiscoveryService,
   ) {
     this.yargs = Yargs(process.argv.slice(2));
+    this.y18n = new Y18N({ locale: this.yargs.locale() } as any);
   }
 
   public async exec(): Promise<void> {
@@ -52,9 +56,12 @@ export class CommandService {
 
     await this.setGlobalConfig(this.config || this.options.config);
 
+    this.y18n = new Y18N(
+      Object.assign({ updateFiles: false }, { locale: this.yargs.locale() }, this.options.y18n) as any,
+    );
     for (const commander of this.commanders) {
       if (this.isNestedCommand(commander)) {
-        this.yargs.command(commander.name, commander.describe || "", y => {
+        this.yargs.command(commander.name, this.y18n.__(commander.describe || ""), y => {
           this.buildCommander(commander, y);
           return y.showHelpOnFail(true).demandCommand();
         });
@@ -110,7 +117,7 @@ export class CommandService {
     }
 
     for (const option of commander.options) {
-      argv.option(option.options.name, option.options);
+      argv.option(option.options.name, this.localizeDescription(option.options));
       argv.middleware(args => {
         let arg = this.getArg(args, [
           option.options.name,
@@ -125,6 +132,27 @@ export class CommandService {
         Reflect.set(option.instance, option.key, this.transformValue(arg, option.pipes));
       });
     }
+  }
+
+  private localizeDescription<
+    T extends { desc?: string; describe?: string; description?: string; defaultDescription?: string }
+  >(options: T): T {
+    if (options.desc) {
+      options.desc = this.y18n.__(options.desc);
+    }
+
+    if (options.describe) {
+      options.describe = this.y18n.__(options.describe);
+    }
+
+    if (options.description) {
+      options.description = this.y18n.__(options.description);
+    }
+
+    if (options.defaultDescription) {
+      options.defaultDescription = this.y18n.__(options.defaultDescription);
+    }
+    return options;
   }
 
   private buildCommand(command: Command, argv: Yargs.Argv): void {
@@ -147,13 +175,13 @@ export class CommandService {
     // command: string | ReadonlyArray<string>, description: string, builder?: BuilderCallback<T, U>, handler?: (args: Arguments<U>) => void
     argv.command(
       commandName.join(" "),
-      command.describe || "",
+      this.y18n.__(command.describe || ""),
       y => {
         for (const positional of command.positionals) {
-          y.positional(positional.options.name, positional.options);
+          y.positional(positional.options.name, this.localizeDescription(positional.options));
         }
         for (const option of command.options) {
-          y.option(option.options.name, option.options);
+          y.option(option.options.name, this.localizeDescription(option.options));
         }
         return y;
       },

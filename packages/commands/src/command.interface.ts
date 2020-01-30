@@ -1,7 +1,6 @@
 import { Type } from "@nestjs/common";
 import { ModuleMetadata, PipeTransform } from "@nestjs/common/interfaces";
 import { Options, PositionalOptions } from "yargs";
-
 export interface GlobalConfigOptions {
   /**
    * Name of config file. This name is used by cosmiconfigSync(configName)
@@ -25,7 +24,21 @@ export interface GlobalConfigOptions {
    */
   searchPlaces?: string[];
 }
-
+export interface Y18nOptions {
+  /**
+   * The locale directory, default ./locales.
+   */
+  directory?: string;
+  /**
+   * Should newly observed strings be updated in file, default false.
+   */
+  updateFiles?: boolean;
+  /**
+   * Should fallback to a language-only file (e.g. en.json) be allowed
+   * if a file matching the locale does not exist (e.g. en_US.json), default true.
+   */
+  fallbackToLanguage?: boolean;
+}
 export interface CommandModuleOptions {
   /**
    * Set to yargs.scriptName
@@ -57,6 +70,8 @@ export interface CommandModuleOptions {
    * @memberof CommandModuleOptions
    */
   config?: GlobalConfigOptions;
+
+  y18n?: Y18nOptions;
 }
 
 export interface CommandModuleAsyncOptions extends Pick<ModuleMetadata, "imports"> {

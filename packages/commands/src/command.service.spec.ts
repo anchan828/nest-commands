@@ -384,5 +384,52 @@ describe("CommandService", () => {
       await parse(service, ["test"]);
       expect(commanderMock).toStrictEqual({ text: "changed" });
     });
+
+    it("should localize descriptions", async () => {
+      const mock = jest.fn();
+      const commanderMock = {} as any;
+      const service = new CommandService({ locale: "en_us" }, {} as DiscoveryService);
+      const commander = {
+        commands: [
+          {
+            instance: ((pos1: number, pos2: number, files: string[]) => {
+              mock({ files, pos1, pos2 });
+            }) as any,
+            name: "test",
+            options: [
+              {
+                instance: commanderMock,
+                key: "token1",
+                options: { defaultDescription: "defaultDescription", name: "token1" },
+                pipes: [],
+              } as any,
+            ],
+            positionals: [
+              {
+                options: { demandPositional: true, desc: "desc", name: "pos1", type: "number" },
+                parameterIndex: 0,
+                pipes: [],
+              },
+              {
+                options: { default: 123, describe: "describe", name: "pos2", type: "number" },
+                parameterIndex: 1,
+                pipes: [],
+              },
+
+              {
+                options: { description: "description", name: "files.." },
+                parameterIndex: 2,
+                pipes: [],
+              },
+            ],
+          },
+        ],
+        instance: {} as any,
+        options: [],
+      } as CommanderInterface;
+      service.commanders.push(commander);
+      await parse(service, ["test", "111", "222", "file1", "file2", "file3"]);
+      await expect(mock).toHaveBeenCalledWith({ files: ["file1", "file2", "file3"], pos1: 111, pos2: 222 });
+    });
   });
 });

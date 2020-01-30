@@ -1,5 +1,5 @@
 import { Command, Commander, CommandOption } from "@anchan828/nest-commands";
-import * as browser from "open";
+import browser from "open";
 @Commander({ describe: "Show author information", name: "author" })
 export class AuthorCommander {
   @Command({ name: "github" })
