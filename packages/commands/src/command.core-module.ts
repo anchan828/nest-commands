@@ -5,10 +5,11 @@ import { CommandModuleAsyncOptions, CommandModuleOptions } from "./command.inter
 import { createAsyncProviders } from "./command.provider";
 import { CommandService } from "./command.service";
 import { ExplorerService } from "./explorer.service";
+import { LocalizationService } from "./localization.service";
 @Module({
   exports: [CommandService],
   imports: [DiscoveryModule],
-  providers: [ExplorerService, CommandService],
+  providers: [ExplorerService, CommandService, LocalizationService],
 })
 export class CommandCoreModule implements OnModuleInit {
   constructor(private readonly explorer: ExplorerService, private readonly service: CommandService) {}

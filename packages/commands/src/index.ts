@@ -17,3 +17,4 @@ export {
 } from "./command.interface";
 export { CommandModule } from "./command.module";
 export { CommandService } from "./command.service";
+export { LocalizationService } from "./localization.service";

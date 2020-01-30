@@ -10,7 +10,7 @@ describe("CommandService", () => {
   });
 
   describe("isNestedCommand", () => {
-    const service = new CommandService({}, {} as DiscoveryService);
+    const service = new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any);
     it("should be defined", () => {
       expect(service["isNestedCommand"]).toBeDefined();
     });
@@ -26,15 +26,19 @@ describe("CommandService", () => {
 
   describe("exec", () => {
     it("should be defined", () => {
-      expect(new CommandService({}, {} as DiscoveryService).exec).toBeDefined();
+      expect(
+        new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any).exec,
+      ).toBeDefined();
     });
 
     it("should return void 0 if not have commanders", () => {
-      expect(new CommandService({}, {} as DiscoveryService).exec()).resolves.toBeUndefined();
+      expect(
+        new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any).exec(),
+      ).resolves.toBeUndefined();
     });
 
     it("should return undefined", () => {
-      const service = new CommandService({}, {} as DiscoveryService);
+      const service = new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any);
       service.commanders.push({} as any);
       service["parser"] = jest.fn().mockResolvedValue(yargs);
       expect(service.exec()).resolves.toBeUndefined();
@@ -54,21 +58,31 @@ describe("CommandService", () => {
     }
 
     it("should be defined", () => {
-      expect(new CommandService({}, {} as DiscoveryService)["parser"]).toBeDefined();
+      expect(
+        new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any)["parser"],
+      ).toBeDefined();
     });
 
     it("should set scriptName", async () => {
-      const service = new CommandService({ scriptName: "test" }, {} as DiscoveryService);
+      const service = new CommandService(
+        { scriptName: "test" },
+        {} as DiscoveryService,
+        { localizeDescriptions: () => ({}) } as any,
+      );
       await expect(parse(service, ["--help"])).resolves.toEqual(expect.any(String));
     });
 
     it("should set usage", async () => {
-      const service = new CommandService({ usage: "test" }, {} as DiscoveryService);
+      const service = new CommandService(
+        { usage: "test" },
+        {} as DiscoveryService,
+        { localizeDescriptions: () => ({}) } as any,
+      );
       await expect(parse(service, ["--help"])).resolves.toEqual(expect.stringMatching(/^test$/gm));
     });
 
     it("should throw error if commander doesn't have command", async () => {
-      const service = new CommandService({}, {} as DiscoveryService);
+      const service = new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any);
       const commander = { commands: [], instance: {} as any, options: [] } as CommanderInterface;
       service.commanders.push(commander);
       await expect(parse(service, [])).rejects.toThrowError();
@@ -76,7 +90,7 @@ describe("CommandService", () => {
 
     it("should set command", async () => {
       const mock = jest.fn();
-      const service = new CommandService({}, {} as DiscoveryService);
+      const service = new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any);
       const commander = {
         commands: [
           {
@@ -98,7 +112,11 @@ describe("CommandService", () => {
 
     it("should set command positionals", async () => {
       const mock = jest.fn();
-      const service = new CommandService({ locale: "en_us" }, {} as DiscoveryService);
+      const service = new CommandService(
+        { locale: "en_us" },
+        {} as DiscoveryService,
+        { localizeDescriptions: () => ({}) } as any,
+      );
       const commander = {
         commands: [
           {
@@ -137,7 +155,11 @@ describe("CommandService", () => {
 
     it("should set command options", async () => {
       const mock = jest.fn();
-      const service = new CommandService({ locale: "en_us" }, {} as DiscoveryService);
+      const service = new CommandService(
+        { locale: "en_us" },
+        {} as DiscoveryService,
+        { localizeDescriptions: () => ({}) } as any,
+      );
       const commander = {
         commands: [
           {
@@ -170,7 +192,7 @@ describe("CommandService", () => {
 
     it("should set nested command", async () => {
       const mock = jest.fn();
-      const service = new CommandService({}, {} as DiscoveryService);
+      const service = new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any);
       const commander = {
         commands: [
           {
@@ -192,7 +214,11 @@ describe("CommandService", () => {
     });
 
     it("should merge commanders", async () => {
-      const service = new CommandService({ locale: "en_us", scriptName: "test" }, {} as DiscoveryService);
+      const service = new CommandService(
+        { locale: "en_us", scriptName: "test" },
+        {} as DiscoveryService,
+        { localizeDescriptions: () => ({}) } as any,
+      );
       service.commanders.push({
         commands: [
           {
@@ -236,7 +262,11 @@ describe("CommandService", () => {
 
     it("should set commander option", async () => {
       const commanderMock = {} as any;
-      const service = new CommandService({ locale: "en_us" }, {} as DiscoveryService);
+      const service = new CommandService(
+        { locale: "en_us" },
+        {} as DiscoveryService,
+        { localizeDescriptions: () => ({}) } as any,
+      );
       const commander = {
         commands: [
           {
@@ -283,9 +313,13 @@ describe("CommandService", () => {
         }
       }
 
-      const service = new CommandService({ locale: "en_us" }, {
-        getProviders: jest.fn().mockReturnValue([{ instance: new TestPipe2(), metatype: TestPipe2 }]),
-      } as any);
+      const service = new CommandService(
+        { locale: "en_us" },
+        {
+          getProviders: jest.fn().mockReturnValue([{ instance: new TestPipe2(), metatype: TestPipe2 }]),
+        } as any,
+        { localizeDescriptions: () => ({}) } as any,
+      );
 
       const commander = {
         commands: [
@@ -330,7 +364,7 @@ describe("CommandService", () => {
     });
 
     it("should set config", async () => {
-      const service = new CommandService({}, {} as DiscoveryService);
+      const service = new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any);
       const commanderMock = {} as any;
       const commander = {
         commands: [
@@ -359,7 +393,7 @@ describe("CommandService", () => {
     });
 
     it("should set config processor", async () => {
-      const service = new CommandService({}, {} as DiscoveryService);
+      const service = new CommandService({}, {} as DiscoveryService, { localizeDescriptions: () => ({}) } as any);
       const commanderMock = {} as any;
       const commander = {
         commands: [
@@ -388,7 +422,11 @@ describe("CommandService", () => {
     it("should localize descriptions", async () => {
       const mock = jest.fn();
       const commanderMock = {} as any;
-      const service = new CommandService({ locale: "en_us" }, {} as DiscoveryService);
+      const service = new CommandService(
+        { locale: "en_us" },
+        {} as DiscoveryService,
+        { localizeDescriptions: () => ({}) } as any,
+      );
       const commander = {
         commands: [
           {
