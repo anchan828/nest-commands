@@ -39,9 +39,6 @@ class TestCommander {
   imports: [
     CommandModule.register({
       locale: "ja_JP",
-      y18n: {
-        updateFiles: false,
-      },
     }),
   ],
   providers: [TestCommander],
