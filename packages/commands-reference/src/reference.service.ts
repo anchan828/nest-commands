@@ -41,7 +41,7 @@ export class CommandReferenceService {
     if (!commandService) {
       throw new Error("CommandService not found. Did you import CommandModule?");
     }
-    const localizationService = this.discoveryService.getProviders().find(p => p.metatype === LocalizationService)
+    const localizationService = this.discoveryService.getProviders().find(p => p.name === "LocalizationService")
       ?.instance as LocalizationService;
     const commandModuleOptions = (this.discoveryService.getProviders().find(p => p.name === COMMAND_MODULE_OPTIONS)
       ?.instance || {}) as CommandModuleOptions;
