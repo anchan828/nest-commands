@@ -34,11 +34,11 @@
   "version": "0.1.1",
   "devDependencies": {
     "@anchan828/nest-commands": "^0.1.1",
-    "@types/figlet": "^1.2.0",
-    "@types/rimraf": "^2.0.3",
-    "@types/yargs": "^15.0.2",
-    "figlet": "^1.2.4",
-    "prettier": "^1.19.1"
+    "@types/figlet": "1.2.0",
+    "@types/rimraf": "2.0.3",
+    "@types/yargs": "15.0.2",
+    "figlet": "1.2.4",
+    "prettier": "1.19.1"
   },
   "dependencies": {
     "rimraf": "^3.0.1"
