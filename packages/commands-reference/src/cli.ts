@@ -15,6 +15,18 @@ async function build(options: CommandReferenceModuleOptions): Promise<void> {
 
   await app.close();
 }
+
+function getLocales(locale?: string | string[]): string[] {
+  if (!locale) {
+    return [];
+  }
+  if (Array.isArray(locale)) {
+    return locale;
+  }
+
+  return [locale];
+}
+
 yargs
   .option("locale", {
     description: "Set output locale if you want to build localized reference.",
@@ -34,33 +46,19 @@ yargs
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     () => {},
     async (args: { moduleFile: string; locale?: string | string[]; output?: string; indexName?: string }) => {
-      const modules = await import(resolve(args.moduleFile));
-
-      for (const key of Object.keys(modules)) {
-        const metadata = Reflect.getMetadata("imports", modules[key]);
-        if (metadata) {
-          if (Array.isArray(args.locale)) {
-            const enLocales = args.locale.filter(l => l.startsWith("en"));
-            const otherLocales = args.locale.filter(l => !l.startsWith("en"));
-
-            for (const locale of [...enLocales, ...otherLocales]) {
-              await build({
-                indexName: args.indexName,
-                locale: locale,
-                module: modules[key],
-                output: args.output ? resolve(args.output) : undefined,
-              });
-            }
-          } else {
+      for (const locale of getLocales(args.locale)) {
+        const modules = await import(resolve(args.moduleFile));
+        for (const key of Object.keys(modules)) {
+          const metadata = Reflect.getMetadata("imports", modules[key]);
+          if (metadata) {
             await build({
               indexName: args.indexName,
-              locale: args.locale,
+              locale: locale,
               module: modules[key],
               output: args.output ? resolve(args.output) : undefined,
             });
+            break;
           }
-
-          break;
         }
       }
     },
