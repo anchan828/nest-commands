@@ -1,0 +1,8 @@
+{
+  "Show author information": "Show author information",
+  "Open github page": "Open github page",
+  "Open twitter page": "Open twitter page",
+  "command.file": "Show file information",
+  "command.file.ls": "Show file list",
+  "command.file.ls.positional.files": "files"
+}

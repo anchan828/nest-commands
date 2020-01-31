@@ -4,8 +4,12 @@
 nest-commands-example file ls [files..]
 ```
 
+## Description
+
+Show file list
+
 ## Positionals
 
 | Positional Name | Description |  Type  | Required | Default Value |
 | :-------------- | :---------- | :----: | :------: | :-----------: |
-| files..         |             | string |  false   |       -       |
+| files..         | files       | string |  false   |       -       |

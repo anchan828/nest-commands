@@ -10,6 +10,6 @@ Show file information
 
 ## Commands
 
-| Command Name  | Description |
-| :------------ | :---------- |
-| [ls](./ls.md) |             |
+| Command Name  | Description    |
+| :------------ | :------------- |
+| [ls](./ls.md) | Show file list |

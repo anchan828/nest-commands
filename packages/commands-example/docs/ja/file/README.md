@@ -10,6 +10,6 @@ nest-commands-example file
 
 ## Commands
 
-| Command Name  | Description |
-| :------------ | :---------- |
-| [ls](./ls.md) |             |
+| Command Name  | Description          |
+| :------------ | :------------------- |
+| [ls](./ls.md) | ファイルリストを表示 |

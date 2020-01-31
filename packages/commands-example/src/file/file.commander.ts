@@ -1,6 +1,6 @@
 import { Command, Commander, CommandPositional } from "@anchan828/nest-commands";
 import { lstatSync, readdirSync } from "fs";
-@Commander({ describe: "Show file information", name: "file" })
+@Commander({ describe: "command.file", name: "file" })
 export class FileCommander {
   /**
    *
@@ -26,8 +26,10 @@ export class FileCommander {
    * @returns {Promise<void>}
    * @memberof FileCommander
    */
-  @Command({ name: "ls" })
-  public async ls(@CommandPositional({ name: "files.." }) files: string[]): Promise<void> {
+  @Command({ describe: "command.file.ls", name: "ls" })
+  public async ls(
+    @CommandPositional({ describe: "command.file.ls.positional.files", name: "files.." }) files: string[],
+  ): Promise<void> {
     for (const file of files) {
       const stats = lstatSync(file);
       if (stats.isDirectory()) {
