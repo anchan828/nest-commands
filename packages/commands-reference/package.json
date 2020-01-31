@@ -3,19 +3,6 @@
   "bugs": {
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
-  "dependencies": {
-    "@anchan828/nest-commands": "^0.1.0",
-    "@nestjs/common": "6.11.4",
-    "@nestjs/core": "6.11.4",
-    "open": "7.0.1",
-    "reflect-metadata": "0.1.13",
-    "rxjs": "6.5.4"
-  },
-  "devDependencies": {
-    "@anchan828/nest-commands-reference": "^0.1.0",
-    "@types/yargs": "15.0.2",
-    "nexe": "3.3.2"
-  },
   "description": "> TODO: description",
   "directories": {
     "dist": "dist"
@@ -23,17 +10,16 @@
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands-example#readme",
+  "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands-reference#readme",
   "license": "MIT",
   "main": "./dist/index.js",
-  "name": "@anchan828/nest-commands-example",
+  "name": "@anchan828/nest-commands-reference",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anchan828/nest-commands.git"
   },
   "scripts": {
     "build": "node ../../node_modules/typescript/bin/tsc -p tsconfig.build.json",
-    "nexe": "nexe ./dist/index.js",
     "build:watch": "node ../../node_modules/typescript/bin/tsc --watch",
     "copy:license": "cp ../../LICENSE ./",
     "lint": "node ../../node_modules/eslint/bin/eslint --ignore-path ../../.eslintignore '**/*.ts' '**/*.spec.ts'",
@@ -42,12 +28,22 @@
     "test": "node ../../node_modules/jest/bin/jest --coverage --logHeapUsage --runInBand",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand --logHeapUsage",
     "test:watch": "node ../../node_modules/jest/bin/jest --watch",
-    "watch": "node ../../node_modules/typescript/bin/tsc -w",
-    "docs": "npm run build && nest-commands-reference dist/app.module.js --locale en --locale ja --indexName README"
+    "watch": "node ../../node_modules/typescript/bin/tsc -w"
   },
   "types": "./dist/index.d.ts",
   "version": "0.1.0",
+  "devDependencies": {
+    "@anchan828/nest-commands": "0.1.0",
+    "@types/figlet": "^1.2.0",
+    "@types/rimraf": "^2.0.3",
+    "@types/yargs": "^15.0.2",
+    "figlet": "^1.2.4",
+    "prettier": "^1.19.1"
+  },
+  "dependencies": {
+    "rimraf": "^3.0.1"
+  },
   "bin": {
-    "nest-commands-example": "./dist/index.js"
+    "nest-commands-reference": "./dist/cli.js"
   }
 }

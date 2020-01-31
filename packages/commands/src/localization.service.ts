@@ -8,58 +8,54 @@ type DescriptionType = { desc?: string; describe?: string; description?: string;
 
 @Injectable()
 export class LocalizationService {
-  private readonly y18nInstance: Y18N;
+  constructor(@Inject(COMMAND_MODULE_OPTIONS) private readonly options: CommandModuleOptions) {}
 
-  public get y18n(): Y18N {
-    return this.y18nInstance;
-  }
-
-  constructor(@Inject(COMMAND_MODULE_OPTIONS) private readonly options: CommandModuleOptions) {
-    this.y18nInstance = new Y18N(
-      Object.assign({ locale: this.options.locale || yargs.locale(), updateFiles: false }, this.options.y18n) as any,
+  public localizeDescriptions(commanders: Commander[], locale?: string): void {
+    const y18n = new Y18N(
+      Object.assign(
+        { locale: locale || this.options.locale || yargs.locale(), updateFiles: false },
+        this.options.y18n,
+      ) as any,
     );
+    commanders.forEach(commander => this.localizeDescription(commander, y18n));
   }
 
-  public localizeDescriptions(commanders: Commander[]): void {
-    commanders.forEach(commander => this.localizeDescription(commander));
-  }
-
-  private localizeDescription(commander: Commander): void {
+  private localizeDescription(commander: Commander, y18n: Y18N): void {
     if (commander.describe) {
-      this.localizeOptions(commander);
+      this.localizeOptions(commander, y18n);
     }
 
     for (const option of commander.options) {
-      this.localizeOptions(option.options);
+      this.localizeOptions(option.options, y18n);
     }
 
     for (const command of commander.commands) {
-      this.localizeOptions(command);
+      this.localizeOptions(command, y18n);
       for (const option of command.options) {
-        this.localizeOptions(option.options);
+        this.localizeOptions(option.options, y18n);
       }
 
       for (const positional of command.positionals) {
-        this.localizeOptions(positional.options);
+        this.localizeOptions(positional.options, y18n);
       }
     }
   }
 
-  private localizeOptions<T extends DescriptionType>(options: T): void {
+  private localizeOptions<T extends DescriptionType>(options: T, y18n: Y18N): void {
     if (options.desc) {
-      options.desc = this.y18n.__(options.desc);
+      options.desc = y18n.__(options.desc);
     }
 
     if (options.describe) {
-      options.describe = this.y18n.__(options.describe);
+      options.describe = y18n.__(options.describe);
     }
 
     if (options.description) {
-      options.description = this.y18n.__(options.description);
+      options.description = y18n.__(options.description);
     }
 
     if (options.defaultDescription) {
-      options.defaultDescription = this.y18n.__(options.defaultDescription);
+      options.defaultDescription = y18n.__(options.defaultDescription);
     }
   }
 }

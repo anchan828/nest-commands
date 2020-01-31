@@ -66,3 +66,4 @@ dist
 packages/**/LICENSE
 packages/cache-dependency/README.md
 packages/commands-example/commands-example
+packages/commands-reference/test-docs

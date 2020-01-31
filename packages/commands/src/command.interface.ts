@@ -139,11 +139,7 @@ export interface CommandPositionalOptions extends PositionalOptions {
   demandPositional?: boolean;
 }
 
-export interface CommandOptionOptions extends Options {
-  name: string;
-}
-
-export interface CommanderOptionOptions extends Options {
+export interface OptionOptions extends Options {
   name: string;
 }
 
@@ -157,14 +153,14 @@ export interface Command extends CommandOptions {
 
 export interface CommandOption {
   parameterIndex: number;
-  options: CommandOptionOptions;
+  options: OptionOptions;
   pipes: PipeTransformArg[];
 }
 
 export interface CommanderOption {
   instance: Function;
   key: string;
-  options: CommanderOptionOptions;
+  options: OptionOptions;
   pipes: PipeTransformArg[];
 }
 
