@@ -1,3 +1,4 @@
+export { COMMAND_MODULE_OPTIONS } from "./command.constants";
 export {
   Command,
   Commander,

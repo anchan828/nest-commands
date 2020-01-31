@@ -12,11 +12,11 @@ import {
   CommanderOption,
   CommanderOptions,
   CommandOption,
-  CommandOptionOptions,
   CommandOptions,
   CommandPositional,
   CommandPositionalOptions,
   GlobalConfigOptions,
+  OptionOptions,
   PipeTransformArg,
 } from "./command.interface";
 
@@ -46,7 +46,7 @@ export function Command(options: CommandOptions): MethodDecorator {
   return SetMetadata(COMMAND_MODULE_COMMAND_DECORATOR, options);
 }
 
-export function CommanderOption(options: CommandOptionOptions, ...pipes: PipeTransformArg[]): PropertyDecorator {
+export function CommanderOption(options: OptionOptions, ...pipes: PipeTransformArg[]): PropertyDecorator {
   return (target: Record<string, any>, key: string | symbol): void => {
     const commanderOption = { key, options, pipes } as CommanderOption;
 
@@ -92,7 +92,7 @@ export function CommandPositional(options: CommandPositionalOptions, ...pipes: P
   };
 }
 
-export function CommandOption(options: CommandOptionOptions, ...pipes: PipeTransformArg[]): ParameterDecorator {
+export function CommandOption(options: OptionOptions, ...pipes: PipeTransformArg[]): ParameterDecorator {
   return (target: any, key: string | symbol, parameterIndex: number): any => {
     const option = { options, parameterIndex, pipes } as CommandOption;
 
