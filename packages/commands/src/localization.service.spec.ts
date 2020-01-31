@@ -41,7 +41,6 @@ describe("LocalizationService", () => {
     const { commanders } = module.get<CommandService>(CommandService);
     const localizationService = module.get<LocalizationService>(LocalizationService);
     expect(commanders).toHaveLength(1);
-    expect(localizationService.y18n).toBeDefined();
     localizationService.localizeDescriptions(commanders);
   });
 });

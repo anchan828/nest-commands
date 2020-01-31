@@ -4,6 +4,6 @@ import { AuthorModule } from "./author/author.module";
 import { FileModule } from "./file/file.module";
 
 @Module({
-  imports: [CommandModule.register(), AuthorModule, FileModule],
+  imports: [CommandModule.register({ scriptName: "nest-commands-example" }), AuthorModule, FileModule],
 })
 export class ExampleModule {}
