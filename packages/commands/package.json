@@ -19,7 +19,7 @@
   "devDependencies": {
     "@types/figlet": "1.2.0",
     "@types/y18n": "4.0.0",
-    "@types/yargs": "15.0.2",
+    "@types/yargs": "15.0.3",
     "figlet": "1.2.4"
   },
   "directories": {
