@@ -7,7 +7,7 @@
     "@anchan828/nest-commands": "^0.1.1",
     "@nestjs/common": "6.11.5",
     "@nestjs/core": "6.11.5",
-    "open": "7.0.1",
+    "open": "7.0.2",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.5.4"
   },
