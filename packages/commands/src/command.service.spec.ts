@@ -134,7 +134,7 @@ describe("CommandService", () => {
             options: [],
             positionals: [
               {
-                options: { demandPositional: true, name: "pos1", type: "number" },
+                options: { demandOption: true, name: "pos1", type: "number" },
                 parameterIndex: 0,
                 pipes: [],
               },
@@ -451,7 +451,7 @@ describe("CommandService", () => {
             ],
             positionals: [
               {
-                options: { demandPositional: true, desc: "desc", name: "pos1", type: "number" },
+                options: { demandOption: true, desc: "desc", name: "pos1", type: "number" },
                 parameterIndex: 0,
                 pipes: [],
               },

@@ -192,7 +192,7 @@ export class CommandService {
   }
 
   private printPositional(positional: CommandPositional): string | undefined {
-    if (positional.options.demandPositional) {
+    if (positional.options.demandOption) {
       return `<${positional.options.name}>`;
     } else {
       return `[${positional.options.name}]`;

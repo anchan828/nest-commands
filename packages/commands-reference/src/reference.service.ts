@@ -190,7 +190,7 @@ export class CommandReferenceService {
       for (const positional of command.positionals) {
         results.push(
           `| ${positional.options.name} | ${this.getDescription(positional.options)} | ${positional.options.type ||
-            "string"} | ${positional.options.demandPositional || false}|${this.getDefaultValue(
+            "string"} | ${positional.options.demandOption || false}|${this.getDefaultValue(
             this.getDefaultValue(positional.options.default),
           )}|`,
         );
@@ -265,7 +265,7 @@ export class CommandReferenceService {
     const results: string[] = [];
 
     for (const positional of positionals) {
-      const fence = positional.options.demandPositional ? "<>" : "[]";
+      const fence = positional.options.demandOption ? "<>" : "[]";
       results.push(`${fence[0]}${positional.options.name}${fence[1]}`.trim());
     }
 
