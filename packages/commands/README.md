@@ -24,6 +24,8 @@ $ npm i --save-dev @types/yargs
 
 ## Usage
 
+cli.ts
+
 ```typescript
 import { Commander, Command, CommandModule, CommandService } from "@anchan828/nest-commands";
 
@@ -45,6 +47,11 @@ class TestAppModule {}
   const app = await NestFactory.createApplicationContext(TestAppModule, { logger: false });
   app.get(CommandService).exec();
 })();
+```
+
+```
+$ ts-node cli.ts basic
+hello!
 ```
 
 ### CommandModule.register
