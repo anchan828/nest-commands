@@ -282,6 +282,6 @@ npx ts-node -T ./examples/config.processor.ts test
 
 ## Tips
 
-You can create single executable file using [nexe](https://github.com/nexe/nexe).
+You can create single executable file using [ncc](https://github.com/zeit/ncc) / [pkg](https://github.com/zeit/pkg) / [nexe](https://github.com/nexe/nexe).
 
 See: [@anchan828/nest-commands-example](../commands-example)
