@@ -17,7 +17,7 @@ export class LocalizationService {
         this.options.y18n,
       ) as any,
     );
-    commanders.forEach(commander => this.localizeDescription(commander, y18n));
+    commanders.forEach((commander) => this.localizeDescription(commander, y18n));
   }
 
   private localizeDescription(commander: Commander, y18n: Y18N): void {

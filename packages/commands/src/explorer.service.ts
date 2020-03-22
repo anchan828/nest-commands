@@ -50,7 +50,7 @@ export class ExplorerService {
   private getGlobalConfigOptions(): GlobalConfigOptions | undefined {
     const classInstanceWrappers = this.discoveryService
       .getProviders()
-      .filter(instanceWrapper => instanceWrapper.metatype);
+      .filter((instanceWrapper) => instanceWrapper.metatype);
 
     for (const classInstanceWrapper of classInstanceWrappers) {
       const metadata = Reflect.getMetadata(COMMAND_MODULE_COMMAND_CONFIG_DECORATOR, classInstanceWrapper.metatype);
@@ -76,13 +76,13 @@ export class ExplorerService {
 
     const classInstanceWrappers = this.discoveryService
       .getProviders()
-      .filter(instanceWrapper => instanceWrapper.metatype);
+      .filter((instanceWrapper) => instanceWrapper.metatype);
 
     for (const classInstanceWrapper of classInstanceWrappers) {
       const metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, classInstanceWrapper.metatype);
 
       if (metadata && isArray(metadata)) {
-        commanders.push(...metadata.map(m => ({ instance: classInstanceWrapper.instance, ...m })));
+        commanders.push(...metadata.map((m) => ({ instance: classInstanceWrapper.instance, ...m })));
       }
     }
 
@@ -164,7 +164,7 @@ export class ExplorerService {
     }
 
     return Array.from(mergedCommanders.values()).filter(
-      commander => commander.options.length !== 0 || commander.commands.length !== 0,
+      (commander) => commander.options.length !== 0 || commander.commands.length !== 0,
     );
   }
 }
