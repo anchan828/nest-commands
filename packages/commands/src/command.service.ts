@@ -63,7 +63,7 @@ export class CommandService {
 
     for (const commander of this.commanders) {
       if (this.isNestedCommand(commander)) {
-        this.yargs.command(commander.name, commander.describe || "", y => {
+        this.yargs.command(commander.name, commander.describe || "", (y) => {
           this.buildCommander(commander, y);
           return y.showHelpOnFail(true).demandCommand();
         });
@@ -120,7 +120,7 @@ export class CommandService {
 
     for (const option of commander.options) {
       argv.option(option.options.name, option.options);
-      argv.middleware(args => {
+      argv.middleware((args) => {
         let arg = this.getArg(args, [
           option.options.name,
           paramCase(option.options.name),
@@ -157,7 +157,7 @@ export class CommandService {
     argv.command(
       commandName.join(" "),
       command.describe || "",
-      y => {
+      (y) => {
         for (const positional of command.positionals) {
           y.positional(positional.options.name, positional.options);
         }
@@ -166,7 +166,7 @@ export class CommandService {
         }
         return y;
       },
-      args => {
+      (args) => {
         const params = Array(command.positionals.length + command.options.length);
 
         for (const positional of command.positionals) {
@@ -204,8 +204,8 @@ export class CommandService {
   }
 
   private getArg(args: Record<string, unknown>, searchKeys: string[]): unknown | undefined {
-    const argKeys = Object.keys(args).filter(key => !["_", "$0"].includes(key));
-    const argKey = argKeys.find(argKey => searchKeys.includes(argKey));
+    const argKeys = Object.keys(args).filter((key) => !["_", "$0"].includes(key));
+    const argKey = argKeys.find((argKey) => searchKeys.includes(argKey));
     return argKey ? args[argKey] : undefined;
   }
 
@@ -221,7 +221,7 @@ export class CommandService {
   }
 
   private getPipeTransformInstance(pipe: Function): object | undefined {
-    const pipeProvider = this.discovery.getProviders().find(p => p.metatype === pipe);
+    const pipeProvider = this.discovery.getProviders().find((p) => p.metatype === pipe);
     if (pipeProvider) {
       return pipeProvider.instance;
     }

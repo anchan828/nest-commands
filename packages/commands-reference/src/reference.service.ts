@@ -36,14 +36,14 @@ export class CommandReferenceService {
   public exec(): void {
     rimraf.sync(this.referenceOptions.output);
 
-    const commandService = this.discoveryService.getProviders().find(p => p.name === "CommandService")
+    const commandService = this.discoveryService.getProviders().find((p) => p.name === "CommandService")
       ?.instance as CommandService;
     if (!commandService) {
       throw new Error("CommandService not found. Did you import CommandModule?");
     }
-    const localizationService = this.discoveryService.getProviders().find(p => p.name === "LocalizationService")
+    const localizationService = this.discoveryService.getProviders().find((p) => p.name === "LocalizationService")
       ?.instance as LocalizationService;
-    const commandModuleOptions = (this.discoveryService.getProviders().find(p => p.name === COMMAND_MODULE_OPTIONS)
+    const commandModuleOptions = (this.discoveryService.getProviders().find((p) => p.name === COMMAND_MODULE_OPTIONS)
       ?.instance || {}) as CommandModuleOptions;
 
     if (this.referenceOptions.locale) {
@@ -57,7 +57,7 @@ export class CommandReferenceService {
 
     this.buildGlobalCommander(commandService.commanders, commandModuleOptions);
 
-    for (const commander of commandService.commanders.filter(commander => commander.name)) {
+    for (const commander of commandService.commanders.filter((commander) => commander.name)) {
       this.buildCommander(commander, commandModuleOptions);
     }
   }
@@ -70,8 +70,8 @@ export class CommandReferenceService {
       results.push("```", commandModuleOptions.usage.replace("$0", commandModuleOptions.scriptName!), "```");
     }
 
-    const globalCommander = commanders.find(commander => !commander.name);
-    const nestedCommands = commanders.filter(commander => commander.name);
+    const globalCommander = commanders.find((commander) => !commander.name);
+    const nestedCommands = commanders.filter((commander) => commander.name);
 
     if (globalCommander) {
       if (globalCommander.describe) {
@@ -87,8 +87,9 @@ export class CommandReferenceService {
 
         for (const option of globalCommander.options) {
           results.push(
-            `| ${option.options.name} | ${this.getDescription(option.options)} | ${option.options.type ||
-              "string"} | ${option.options.demandOption || false}|${this.getDefaultValue(option.options.default)}|`,
+            `| ${option.options.name} | ${this.getDescription(option.options)} | ${option.options.type || "string"} | ${
+              option.options.demandOption || false
+            }|${this.getDefaultValue(option.options.default)}|`,
           );
         }
       }
@@ -124,13 +125,13 @@ export class CommandReferenceService {
       return;
     }
 
-    const runCommand = [commandModuleOptions.scriptName, commander.name].filter(x => x?.trim()).join(" ");
+    const runCommand = [commandModuleOptions.scriptName, commander.name].filter((x) => x?.trim()).join(" ");
 
     const results: string[] = [`# ${runCommand}`];
 
     results.push(
       "```sh",
-      `${runCommand} ${this.getCommandOptionUsage(commander.options.map(o => o.options))}`.replace(/  /g, " "),
+      `${runCommand} ${this.getCommandOptionUsage(commander.options.map((o) => o.options))}`.replace(/  /g, " "),
       "```",
     );
 
@@ -147,8 +148,9 @@ export class CommandReferenceService {
 
       for (const option of commander.options) {
         results.push(
-          `| ${option.options.name} | ${this.getDescription(option.options)} | ${option.options.type ||
-            "string"} | ${option.options.demandOption || false}|${this.getDefaultValue(option.options.default)}|`,
+          `| ${option.options.name} | ${this.getDescription(option.options)} | ${option.options.type || "string"} | ${
+            option.options.demandOption || false
+          }|${this.getDefaultValue(option.options.default)}|`,
         );
       }
     }
@@ -163,15 +165,17 @@ export class CommandReferenceService {
   }
 
   private buildCommand(commander: Commander, command: Command, commandModuleOptions: CommandModuleOptions): void {
-    const runCommand = [commandModuleOptions.scriptName, commander.name, command.name].filter(x => x?.trim()).join(" ");
+    const runCommand = [commandModuleOptions.scriptName, commander.name, command.name]
+      .filter((x) => x?.trim())
+      .join(" ");
 
     const results: string[] = [`# ${runCommand}`];
 
     results.push(
       "```sh",
       `${runCommand} ${this.getCommandOptionUsage([
-        ...commander.options.map(o => o.options),
-        ...command.options.map(o => o.options),
+        ...commander.options.map((o) => o.options),
+        ...command.options.map((o) => o.options),
       ])} ${this.getCommandPositionalUsage(command.positionals)}`.replace(/  /g, " "),
       "```",
     );
@@ -189,8 +193,9 @@ export class CommandReferenceService {
 
       for (const positional of command.positionals) {
         results.push(
-          `| ${positional.options.name} | ${this.getDescription(positional.options)} | ${positional.options.type ||
-            "string"} | ${positional.options.demandOption || false}|${this.getDefaultValue(
+          `| ${positional.options.name} | ${this.getDescription(positional.options)} | ${
+            positional.options.type || "string"
+          } | ${positional.options.demandOption || false}|${this.getDefaultValue(
             this.getDefaultValue(positional.options.default),
           )}|`,
         );
@@ -207,16 +212,18 @@ export class CommandReferenceService {
     if (commander.options.length !== 0) {
       for (const option of commander.options) {
         results.push(
-          `| ${option.options.name} | ${this.getDescription(option.options)} | ${option.options.type ||
-            "string"} | ${option.options.demandOption || false}|${this.getDefaultValue(option.options.default)}|`,
+          `| ${option.options.name} | ${this.getDescription(option.options)} | ${option.options.type || "string"} | ${
+            option.options.demandOption || false
+          }|${this.getDefaultValue(option.options.default)}|`,
         );
       }
     }
     if (command.options.length !== 0) {
       for (const option of command.options) {
         results.push(
-          `| ${option.options.name} | ${this.getDescription(option.options)} | ${option.options.type ||
-            "string"} | ${option.options.demandOption || false}|${this.getDefaultValue(option.options.default)}|`,
+          `| ${option.options.name} | ${this.getDescription(option.options)} | ${option.options.type || "string"} | ${
+            option.options.demandOption || false
+          }|${this.getDefaultValue(option.options.default)}|`,
         );
       }
     }
