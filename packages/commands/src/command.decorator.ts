@@ -9,11 +9,11 @@ import {
   COMMAND_MODULE_COMMAND_POSITIONAL_DECORATOR,
 } from "./command.constants";
 import {
-  CommanderOption,
-  CommanderOptions,
-  CommandOption,
+  CommanderOption as CommanderOptionInterface,
+  CommanderOptions as CommanderOptionsInterface,
+  CommandOption as CommandOptionInterface,
   CommandOptions,
-  CommandPositional,
+  CommandPositional as CommandPositionalInterface,
   CommandPositionalOptions,
   GlobalConfigOptions,
   OptionOptions,
@@ -28,11 +28,13 @@ export function GlobalConfigProcessor(): MethodDecorator {
   return SetMetadata(COMMAND_MODULE_COMMAND_CONFIG_PROCESSOR, "set");
 }
 
-export function Commander(options?: CommanderOptions): ClassDecorator {
+export function Commander(options?: CommanderOptionsInterface): ClassDecorator {
   return (target: Record<string, any>): void => {
     const commanderOption = options || { name: undefined };
 
-    let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, target) as CommanderOptions[] | undefined;
+    let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, target) as
+      | CommanderOptionsInterface[]
+      | undefined;
 
     if (!Array.isArray(metadata)) {
       metadata = [];
@@ -48,10 +50,10 @@ export function Command(options: CommandOptions): MethodDecorator {
 
 export function CommanderOption(options: OptionOptions, ...pipes: PipeTransformArg[]): PropertyDecorator {
   return (target: Record<string, any>, key: string | symbol): void => {
-    const commanderOption = { key, options, pipes } as CommanderOption;
+    const commanderOption = { key, options, pipes } as CommanderOptionInterface;
 
     let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_OPTION_DECORATOR, target) as
-      | CommanderOption[]
+      | CommanderOptionInterface[]
       | undefined;
 
     if (!Array.isArray(metadata)) {
@@ -72,10 +74,10 @@ export function CommanderOption(options: OptionOptions, ...pipes: PipeTransformA
 
 export function CommandPositional(options: CommandPositionalOptions, ...pipes: PipeTransformArg[]): ParameterDecorator {
   return (target: any, key: string | symbol, parameterIndex: number): void => {
-    const positional = { options, parameterIndex, pipes } as CommandPositional;
+    const positional = { options, parameterIndex, pipes } as CommandPositionalInterface;
 
     let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMAND_POSITIONAL_DECORATOR, target, key) as
-      | CommandPositional[]
+      | CommandPositionalInterface[]
       | undefined;
 
     if (!Array.isArray(metadata)) {
@@ -94,10 +96,10 @@ export function CommandPositional(options: CommandPositionalOptions, ...pipes: P
 
 export function CommandOption(options: OptionOptions, ...pipes: PipeTransformArg[]): ParameterDecorator {
   return (target: any, key: string | symbol, parameterIndex: number): any => {
-    const option = { options, parameterIndex, pipes } as CommandOption;
+    const option = { options, parameterIndex, pipes } as CommandOptionInterface;
 
     let metadata = Reflect.getMetadata(COMMAND_MODULE_COMMAND_OPTION_DECORATOR, target, key) as
-      | CommandOption[]
+      | CommandOptionInterface[]
       | undefined;
 
     if (!Array.isArray(metadata)) {
