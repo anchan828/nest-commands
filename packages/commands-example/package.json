@@ -5,8 +5,8 @@
   },
   "dependencies": {
     "@anchan828/nest-commands": "^0.1.44",
-    "@nestjs/common": "7.5.0",
-    "@nestjs/core": "7.5.0",
+    "@nestjs/common": "7.5.1",
+    "@nestjs/core": "7.5.1",
     "open": "7.3.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.3"
