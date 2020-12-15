@@ -36,7 +36,7 @@
     "@anchan828/nest-commands": "^0.1.50",
     "@types/figlet": "1.2.1",
     "@types/rimraf": "3.0.0",
-    "@types/yargs": "15.0.11",
+    "@types/yargs": "15.0.12",
     "figlet": "1.5.0",
     "prettier": "2.2.1"
   },
