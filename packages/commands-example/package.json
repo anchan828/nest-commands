@@ -9,7 +9,7 @@
     "@nestjs/core": "7.6.15",
     "open": "8.0.7",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.6.7"
+    "rxjs": "7.0.0"
   },
   "devDependencies": {
     "@anchan828/nest-commands-reference": "^0.1.69",
