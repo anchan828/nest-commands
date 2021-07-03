@@ -53,25 +53,22 @@ if (isMainThread) {
 
   yargs.argv;
 } else if (parentPort) {
-  parentPort.once(
-    "message",
-    async (options: CommandReferenceModuleOptions): Promise<void> => {
-      const modules = await import(resolve(options.module));
-      for (const key of Object.keys(modules)) {
-        const metadata = Reflect.getMetadata("imports", modules[key]);
+  parentPort.once("message", async (options: CommandReferenceModuleOptions): Promise<void> => {
+    const modules = await import(resolve(options.module));
+    for (const key of Object.keys(modules)) {
+      const metadata = Reflect.getMetadata("imports", modules[key]);
 
-        if (metadata) {
-          options.module = modules[key];
-          const app = await NestFactory.createApplicationContext(CommandReferenceModule.register(options), {
-            logger: false,
-          });
-          await app.init();
-          app.get(CommandReferenceService).exec();
+      if (metadata) {
+        options.module = modules[key];
+        const app = await NestFactory.createApplicationContext(CommandReferenceModule.register(options), {
+          logger: false,
+        });
+        await app.init();
+        app.get(CommandReferenceService).exec();
 
-          await app.close();
-          break;
-        }
+        await app.close();
+        break;
       }
-    },
-  );
+    }
+  });
 }
