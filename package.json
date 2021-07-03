@@ -61,7 +61,7 @@
     "publish": "lerna publish --yes patch",
     "publish:major": "lerna publish --yes major",
     "publish:minor": "lerna publish --yes minor",
-    "test": "lerna run test && ts-node scripts/merge-coverage.ts",
+    "test": "lerna run test && npx @anchan828/merge-coverage",
     "watch": "lerna run --parallel watch"
   },
   "private": true
