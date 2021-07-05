@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@anchan828/nest-commands-reference": "^0.1.79",
-    "@types/yargs": "17.0.1",
+    "@types/yargs": "17.0.2",
     "nexe": "3.3.7"
   },
   "description": "> TODO: description",
