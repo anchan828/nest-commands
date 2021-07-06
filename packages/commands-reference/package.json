@@ -34,7 +34,7 @@
   "version": "0.1.79",
   "devDependencies": {
     "@anchan828/nest-commands": "^0.1.79",
-    "@types/figlet": "1.5.1",
+    "@types/figlet": "1.5.2",
     "@types/rimraf": "3.0.0",
     "@types/yargs": "17.0.2",
     "figlet": "1.5.0",
