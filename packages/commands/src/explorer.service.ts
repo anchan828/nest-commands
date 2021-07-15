@@ -82,7 +82,7 @@ export class ExplorerService {
       const metadata = Reflect.getMetadata(COMMAND_MODULE_COMMANDER_DECORATOR, classInstanceWrapper.metatype);
 
       if (metadata && isArray(metadata)) {
-        commanders.push(...metadata.map((m) => ({ instance: classInstanceWrapper.instance, ...m })));
+        commanders.push(...metadata.map((m: any) => ({ instance: classInstanceWrapper.instance, ...m })));
       }
     }
 
