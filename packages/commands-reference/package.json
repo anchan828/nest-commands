@@ -31,9 +31,9 @@
     "watch": "node ../../node_modules/typescript/bin/tsc -w"
   },
   "types": "./dist/index.d.ts",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "devDependencies": {
-    "@anchan828/nest-commands": "^0.2.1",
+    "@anchan828/nest-commands": "^0.2.2",
     "@types/figlet": "1.5.4",
     "@types/rimraf": "3.0.1",
     "@types/yargs": "17.0.2",
