@@ -38,12 +38,17 @@
     "@types/rimraf": "3.0.1",
     "@types/yargs": "17.0.2",
     "figlet": "1.5.0",
-    "prettier": "2.3.2"
+    "prettier": "2.3.2",
+    "@nestjs/common": "8.0.4",
+    "rxjs": "7.2.0"
   },
   "dependencies": {
     "rimraf": "^3.0.1"
   },
   "bin": {
     "nest-commands-reference": "./dist/cli.js"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^8.0.0"
   }
 }

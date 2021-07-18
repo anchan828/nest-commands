@@ -20,7 +20,9 @@
     "@types/figlet": "1.5.4",
     "@types/y18n": "4.0.0",
     "@types/yargs": "17.0.2",
-    "figlet": "1.5.0"
+    "figlet": "1.5.0",
+    "@nestjs/common": "8.0.4",
+    "rxjs": "7.2.0"
   },
   "directories": {
     "dist": "dist"
@@ -48,5 +50,8 @@
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand --logHeapUsage",
     "test:watch": "node ../../node_modules/jest/bin/jest --watch --coverage",
     "watch": "node ../../node_modules/typescript/bin/tsc -w"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^8.0.0"
   }
 }
