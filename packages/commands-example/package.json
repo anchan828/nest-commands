@@ -4,7 +4,7 @@
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
   "dependencies": {
-    "@anchan828/nest-commands": "^0.2.3",
+    "@anchan828/nest-commands": "^0.2.4",
     "@nestjs/common": "8.0.4",
     "@nestjs/core": "8.0.4",
     "open": "8.2.1",
@@ -12,7 +12,7 @@
     "rxjs": "7.2.0"
   },
   "devDependencies": {
-    "@anchan828/nest-commands-reference": "^0.2.3",
+    "@anchan828/nest-commands-reference": "^0.2.4",
     "@nestjs/common": "8.0.4",
     "@types/yargs": "17.0.2",
     "nexe": "3.3.7",
@@ -48,7 +48,7 @@
     "docs": "npm run build && nest-commands-reference dist/app.module.js --locale en --locale ja --indexName README"
   },
   "types": "./dist/index.d.ts",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "bin": {
     "nest-commands-example": "./dist/index.js"
   },
