@@ -57,7 +57,7 @@
     "lint": "eslint --ignore-pattern packages '**/*.ts' && lerna run --parallel lint",
     "lint:fix": "eslint --ignore-pattern packages --fix '**/*.ts' && lerna run --parallel lint:fix",
     "new": "ts-node scripts/new-package.ts",
-    "postinstall": "npm run bootstrap && npm run build",
+    "postinstall": "husky install && npm run bootstrap && npm run build",
     "postnew": "ts-node scripts/generate-vs-launch.ts",
     "publish": "lerna publish --yes patch",
     "publish:major": "lerna publish --yes major",
