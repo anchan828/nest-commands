@@ -17,7 +17,7 @@
     "yargs": "17.1.0"
   },
   "devDependencies": {
-    "@nestjs/common": "8.0.5",
+    "@nestjs/common": "8.0.6",
     "@types/figlet": "1.5.4",
     "@types/y18n": "4.0.0",
     "@types/yargs": "17.0.2",
