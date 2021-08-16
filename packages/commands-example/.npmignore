@@ -1,4 +1,3 @@
 *
-dist/*.tsbuildinfo
 !dist/**/*
-!locales/*
+dist/**/*.tsbuildinfo
