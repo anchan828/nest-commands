@@ -11,7 +11,7 @@
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
   "dependencies": {
-    "cosmiconfig": "7.0.0",
+    "cosmiconfig": "7.0.1",
     "param-case": "3.0.4",
     "y18n": "^4.0.0",
     "yargs": "17.1.1"
