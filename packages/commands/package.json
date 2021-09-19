@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "name": "@anchan828/nest-commands",
   "types": "./dist/index.d.ts",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "bugs": {
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
