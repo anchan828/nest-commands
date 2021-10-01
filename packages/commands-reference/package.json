@@ -40,7 +40,7 @@
     "@types/yargs": "17.0.3",
     "figlet": "1.5.2",
     "prettier": "2.4.1",
-    "rxjs": "7.3.0"
+    "rxjs": "7.3.1"
   },
   "dependencies": {
     "rimraf": "^3.0.1"
