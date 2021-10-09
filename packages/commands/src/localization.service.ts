@@ -3,6 +3,8 @@ import Y18N from "y18n";
 import yargs from "yargs";
 import { COMMAND_MODULE_OPTIONS } from "./command.constants";
 import { Commander, CommandModuleOptions } from "./command.interface";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Y18NFunc = require("y18n");
 
 type DescriptionType = { desc?: string; describe?: string; description?: string; defaultDescription?: string };
 
@@ -11,7 +13,7 @@ export class LocalizationService {
   constructor(@Inject(COMMAND_MODULE_OPTIONS) private readonly options: CommandModuleOptions) {}
 
   public localizeDescriptions(commanders: Commander[], locale?: string): void {
-    const y18n = new Y18N(
+    const y18n = Y18NFunc(
       Object.assign(
         { locale: locale || this.options.locale || yargs.locale(), updateFiles: false },
         this.options.y18n,
