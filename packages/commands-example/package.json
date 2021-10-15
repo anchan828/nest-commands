@@ -14,7 +14,7 @@
   "devDependencies": {
     "@anchan828/nest-commands-reference": "^0.2.15",
     "@nestjs/common": "8.1.1",
-    "@types/yargs": "17.0.3",
+    "@types/yargs": "17.0.4",
     "nexe": "3.3.7",
     "rxjs": "7.4.0"
   },
