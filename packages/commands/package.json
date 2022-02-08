@@ -22,7 +22,7 @@
     "@types/y18n": "4.0.0",
     "@types/yargs": "17.0.7",
     "figlet": "1.5.2",
-    "rxjs": "7.5.2"
+    "rxjs": "7.5.3"
   },
   "directories": {
     "dist": "dist"
