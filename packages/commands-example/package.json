@@ -5,15 +5,15 @@
   },
   "dependencies": {
     "@anchan828/nest-commands": "^0.2.33",
-    "@nestjs/common": "8.2.6",
-    "@nestjs/core": "8.2.6",
+    "@nestjs/common": "8.3.0",
+    "@nestjs/core": "8.3.0",
     "open": "8.4.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.5.4"
   },
   "devDependencies": {
     "@anchan828/nest-commands-reference": "^0.2.33",
-    "@nestjs/common": "8.2.6",
+    "@nestjs/common": "8.3.0",
     "@types/yargs": "17.0.7",
     "nexe": "3.3.7",
     "rxjs": "7.5.4"
