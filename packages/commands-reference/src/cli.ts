@@ -36,9 +36,8 @@ if (isMainThread) {
     .command(
       "$0 [--locale, -l] [--output, -o] [--index-name] <module-file>",
       "build cli reference",
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      () => {},
-      async (args: { moduleFile: string; locale?: string | string[]; output?: string; indexName?: string }) => {
+      (yargs) => yargs,
+      async (args: any) => {
         for (const locale of getLocales(args.locale)) {
           const worker = new Worker(__filename);
           worker.postMessage({
