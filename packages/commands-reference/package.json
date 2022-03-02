@@ -37,7 +37,7 @@
     "@nestjs/common": "8.4.0",
     "@types/figlet": "1.5.4",
     "@types/rimraf": "3.0.2",
-    "@types/yargs": "17.0.8",
+    "@types/yargs": "17.0.9",
     "figlet": "1.5.2",
     "prettier": "2.5.1",
     "rxjs": "7.5.4"
