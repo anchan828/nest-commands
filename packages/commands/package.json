@@ -20,7 +20,7 @@
     "@nestjs/common": "8.4.1",
     "@types/figlet": "1.5.4",
     "@types/y18n": "4.0.0",
-    "@types/yargs": "17.0.9",
+    "@types/yargs": "17.0.10",
     "figlet": "1.5.2",
     "rxjs": "7.5.5"
   },
