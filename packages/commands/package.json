@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "name": "@anchan828/nest-commands",
   "types": "./dist/index.d.ts",
-  "version": "0.2.40",
+  "version": "0.2.41",
   "bugs": {
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
@@ -14,10 +14,10 @@
     "cosmiconfig": "7.0.1",
     "param-case": "3.0.4",
     "y18n": "^5.0.0",
-    "yargs": "17.4.0"
+    "yargs": "17.4.1"
   },
   "devDependencies": {
-    "@nestjs/common": "8.4.3",
+    "@nestjs/common": "8.4.4",
     "@types/figlet": "1.5.4",
     "@types/y18n": "4.0.0",
     "@types/yargs": "17.0.10",
