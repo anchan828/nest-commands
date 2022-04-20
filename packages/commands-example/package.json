@@ -1,7 +1,41 @@
 {
-  "author": "anchan828 <anchan828@gmail.com>",
+  "name": "@anchan828/nest-commands-example",
+  "version": "0.2.42",
+  "description": "> TODO: description",
+  "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands-example#readme",
   "bugs": {
     "url": "https://github.com/anchan828/nest-commands/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anchan828/nest-commands.git"
+  },
+  "license": "MIT",
+  "author": "anchan828 <anchan828@gmail.com>",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "nest-commands-example": "./dist/index.js"
+  },
+  "directories": {
+    "dist": "dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc --watch",
+    "copy:license": "cp ../../LICENSE ./",
+    "docs": "npm run build && nest-commands-reference dist/app.module.js --locale en --locale ja --indexName README",
+    "lint": "eslint --ignore-path ../../.eslintignore '**/*.ts' '**/*.spec.ts'",
+    "lint:fix": "npm run lint -- --fix",
+    "nexe": "nexe ./dist/index.js",
+    "prepublishOnly": "rm -rf dist && npm run build && rm -f dist/*.tsbuildinfo && npm run copy:license",
+    "test": "jest --coverage --logHeapUsage --runInBand",
+    "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand --logHeapUsage",
+    "test:watch": "jest --watch",
+    "watch": "tsc -w"
   },
   "dependencies": {
     "@anchan828/nest-commands": "^0.2.42",
@@ -17,40 +51,6 @@
     "@types/yargs": "17.0.10",
     "nexe": "3.3.7",
     "rxjs": "7.5.5"
-  },
-  "description": "> TODO: description",
-  "directories": {
-    "dist": "dist"
-  },
-  "files": [
-    "dist"
-  ],
-  "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands-example#readme",
-  "license": "MIT",
-  "main": "./dist/index.js",
-  "name": "@anchan828/nest-commands-example",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/anchan828/nest-commands.git"
-  },
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "nexe": "nexe ./dist/index.js",
-    "build:watch": "tsc --watch",
-    "copy:license": "cp ../../LICENSE ./",
-    "lint": "eslint --ignore-path ../../.eslintignore '**/*.ts' '**/*.spec.ts'",
-    "lint:fix": "npm run lint -- --fix",
-    "prepublishOnly": "rm -rf dist && npm run build && rm -f dist/*.tsbuildinfo && npm run copy:license",
-    "test": "jest --coverage --logHeapUsage --runInBand",
-    "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand --logHeapUsage",
-    "test:watch": "jest --watch",
-    "watch": "tsc -w",
-    "docs": "npm run build && nest-commands-reference dist/app.module.js --locale en --locale ja --indexName README"
-  },
-  "types": "./dist/index.d.ts",
-  "version": "0.2.42",
-  "bin": {
-    "nest-commands-example": "./dist/index.js"
   },
   "peerDependencies": {
     "@nestjs/common": "^8.0.0"

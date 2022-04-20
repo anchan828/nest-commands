@@ -1,23 +1,28 @@
 {
-  "author": "anchan828 <anchan828@gmail.com>",
+  "name": "@anchan828/nest-commands-reference",
+  "version": "0.2.42",
+  "description": "> TODO: description",
+  "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands-reference#readme",
   "bugs": {
     "url": "https://github.com/anchan828/nest-commands/issues"
   },
-  "description": "> TODO: description",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anchan828/nest-commands.git"
+  },
+  "license": "MIT",
+  "author": "anchan828 <anchan828@gmail.com>",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "nest-commands-reference": "./dist/cli.js"
+  },
   "directories": {
     "dist": "dist"
   },
   "files": [
     "dist"
   ],
-  "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands-reference#readme",
-  "license": "MIT",
-  "main": "./dist/index.js",
-  "name": "@anchan828/nest-commands-reference",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/anchan828/nest-commands.git"
-  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "build:watch": "tsc --watch",
@@ -30,8 +35,9 @@
     "test:watch": "jest --watch",
     "watch": "tsc -w"
   },
-  "types": "./dist/index.d.ts",
-  "version": "0.2.42",
+  "dependencies": {
+    "rimraf": "^3.0.1"
+  },
   "devDependencies": {
     "@anchan828/nest-commands": "^0.2.42",
     "@nestjs/common": "8.4.4",
@@ -41,12 +47,6 @@
     "figlet": "1.5.2",
     "prettier": "2.6.2",
     "rxjs": "7.5.5"
-  },
-  "dependencies": {
-    "rimraf": "^3.0.1"
-  },
-  "bin": {
-    "nest-commands-reference": "./dist/cli.js"
   },
   "peerDependencies": {
     "@nestjs/common": "^8.0.0"
