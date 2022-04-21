@@ -28,7 +28,7 @@
     "build:watch": "tsc --watch",
     "copy:license": "cp ../../LICENSE ./",
     "docs": "npm run build && nest-commands-reference dist/app.module.js --locale en --locale ja --indexName README",
-    "lint": "eslint --ignore-path ../../.eslintignore '**/*.ts' '**/*.spec.ts'",
+    "lint": "TIMING=1 eslint --ignore-path ../../.eslintignore '**/*.ts'",
     "lint:fix": "npm run lint -- --fix",
     "nexe": "nexe ./dist/index.js",
     "prepublishOnly": "rm -rf dist && npm run build && rm -f dist/*.tsbuildinfo && npm run copy:license",
