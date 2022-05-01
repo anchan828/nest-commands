@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/nest-commands-reference",
-  "version": "0.2.43",
+  "version": "0.2.44",
   "description": "> TODO: description",
   "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands-reference#readme",
   "bugs": {
@@ -39,7 +39,7 @@
     "rimraf": "^3.0.1"
   },
   "devDependencies": {
-    "@anchan828/nest-commands": "^0.2.43",
+    "@anchan828/nest-commands": "^0.2.44",
     "@nestjs/common": "8.4.4",
     "@types/figlet": "1.5.4",
     "@types/rimraf": "3.0.2",
