@@ -41,7 +41,7 @@
     "cosmiconfig": "7.0.1",
     "param-case": "3.0.4",
     "y18n": "^5.0.0",
-    "yargs": "17.5.0"
+    "yargs": "17.5.1"
   },
   "devDependencies": {
     "@nestjs/common": "8.4.5",
