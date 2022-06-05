@@ -1,6 +1,6 @@
 {
   "name": "@anchan828/nest-commands-example",
-  "version": "0.2.48",
+  "version": "0.2.49",
   "description": "> TODO: description",
   "homepage": "https://github.com/anchan828/nest-commands/tree/master/packages/commands-example#readme",
   "bugs": {
@@ -38,7 +38,7 @@
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@anchan828/nest-commands": "^0.2.48",
+    "@anchan828/nest-commands": "^0.2.49",
     "@nestjs/common": "8.4.6",
     "@nestjs/core": "8.4.6",
     "open": "8.4.0",
@@ -46,7 +46,7 @@
     "rxjs": "7.5.5"
   },
   "devDependencies": {
-    "@anchan828/nest-commands-reference": "^0.2.48",
+    "@anchan828/nest-commands-reference": "^0.2.49",
     "@nestjs/common": "8.4.6",
     "@types/yargs": "17.0.10",
     "nexe": "3.3.7",
