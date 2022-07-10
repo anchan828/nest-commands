@@ -29,7 +29,7 @@
     "copy:license": "cp ../../LICENSE ./",
     "lint": "TIMING=1 eslint --ignore-path ../../.eslintignore '**/*.ts'",
     "lint:fix": "npm run lint -- --fix",
-    "prepublishOnly": "rm -rf dist && npm run build && rm -f dist/*.tsbuildinfo && npm run copy:license",
+    "prepublishOnly": "npm run build && rm -f dist/*.tsbuildinfo && npm run copy:license",
     "test": "jest --coverage --logHeapUsage --runInBand",
     "test:debug": "node --inspect-brk ../../node_modules/.bin/jest --runInBand --logHeapUsage",
     "test:watch": "jest --watch",
